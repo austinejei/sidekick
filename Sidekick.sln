@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthServer", "AuthServer\AuthServer.csproj", "{5FA4D0C3-C739-4AF3-97AA-8893A107257D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLayer", "DataLayer\DataLayer.csproj", "{1D074CA9-F505-4174-A61B-014117C143B7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ResourceServer", "ResourceServer", "{CACF2D9E-13AC-41DD-805E-C378D151BDC2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5FA4D0C3-C739-4AF3-97AA-8893A107257D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FA4D0C3-C739-4AF3-97AA-8893A107257D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FA4D0C3-C739-4AF3-97AA-8893A107257D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FA4D0C3-C739-4AF3-97AA-8893A107257D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D074CA9-F505-4174-A61B-014117C143B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D074CA9-F505-4174-A61B-014117C143B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D074CA9-F505-4174-A61B-014117C143B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D074CA9-F505-4174-A61B-014117C143B7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
