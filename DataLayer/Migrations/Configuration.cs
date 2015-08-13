@@ -59,7 +59,7 @@ namespace DataLayer.Migrations
                                                               ClientId = "354yeghdsfc",
                                                               ClientSecret = "ytfghnfg454",
                                                               DateCreated = DateTime.Now,
-                                                              RedirectUrl = "http://www.onestep.app/oauth",
+                                                              RedirectUrl = "https://www.getpostman.com/oauth2/callback",
                                                               Username = "kwaku.dev@sidekick.com",
                                                               IsActive=true,
                                                               Meta = "{\"rateLimit\":2000}", //API rate limit,
@@ -72,7 +72,8 @@ namespace DataLayer.Migrations
                                                       new AppScope
                                                       {
                                                           AppId = 1,
-                                                          OAuthScopeId=1
+                                                          OAuthScopeId=1,
+                                                          
                                                       },
                                                        new AppScope
                                                       {

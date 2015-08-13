@@ -5,9 +5,10 @@
 
 <h2>@ViewBag.Title.</h2>
 
-@using (Html.BeginForm("Authorize", "OAuth", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-{
-    @Html.AntiForgeryToken()
+@*@using (Html.BeginForm("Authorize", "OAuth", FormMethod.Get, new { @class = "form-horizontal", role = "form" }))
+{*@
+<form method="POST" class="form-horizontal" role="form">
+    @*@Html.AntiForgeryToken()*@
     <h4>@Model.AppName (developed by @Model.Developer) wants the following permissions from your account.</h4>
     <h5>Description: @Model.AppDescription</h5>
     <hr />
@@ -17,26 +18,26 @@
         @foreach (var item in Model.Scopes)
         {
 
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">@item.Alias</h4>
-            <p class="list-group-item-text">@item.Description</p>
-        </a>
-        
+            <a href="#" class="list-group-item">
+                <h4 class="list-group-item-heading">@item.Alias</h4>
+                <p class="list-group-item-text">@item.Description</p>
+            </a>
+
 
         }
     </div>
 
 
     <p class="text-info">You may contact the developer at @Model.DeveloperEmail</p>
-    
+
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
             <input type="submit" class="btn btn-success" name="submit.Grant" value="Accept" />
             <input type="submit" class="btn btn-danger" name="submit.Deny" value="Reject" />
         </div>
     </div>
-}
+</form>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }
