@@ -1,7 +1,9 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using DataLayer;
@@ -16,7 +18,7 @@ namespace AuthServer.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Authorize(OAuthModel model)
+        public async Task<ActionResult> Authorize(OAuthModel model)
         {
             var authentication = HttpContext.GetOwinContext().Authentication;
             var scopes = (Request.QueryString.Get("scope") ?? "").Split(' ');
@@ -29,6 +31,34 @@ namespace AuthServer.Controllers
                 {
                     identity.AddClaim(new Claim("urn:oauth:scope", scope));
                 }
+
+                var clientId = Request.QueryString.Get("client_id") ?? "";
+                var app = _dbContext.Apps.FirstOrDefault(a => a.ClientId == clientId);
+
+                //install the app onto the user's account
+                _dbContext.UserApps.Add(new UserApp
+                                        {
+                                            AppId = app.Id,
+                                            DateInstalled = DateTime.Now,
+                                            Username = User.Identity.Name,
+                                            
+                                        });
+
+                //copy the scopes into the user's account
+                //in the future, the user may tend to disable some scopes for this app
+                foreach (var appScope in app.AppScopes)
+                {
+                    _dbContext.UserAppScopes.Add(new UserAppScope
+                    {
+                        AppId = app.Id,
+                        Enabled=true,
+                        OAuthScopeId = appScope.OAuthScopeId,
+                        Username = User.Identity.Name
+                    });
+                }
+
+                await _dbContext.SaveChangesAsync();
+              
                 authentication.SignIn(identity);
             }
 
