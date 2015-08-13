@@ -16,9 +16,6 @@ namespace AuthServer.Controllers
     {
 
         private readonly ApplicationDbContext _dbContext = new ApplicationDbContext();
-
-
-
      
         // GET: OAuth
         public async Task<ActionResult> Authorize()

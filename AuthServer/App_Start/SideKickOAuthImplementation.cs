@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Concurrent;
+
 using System.Linq;
+using System.Security.Claims;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Infrastructure;
 using Microsoft.Owin.Security.OAuth;
@@ -44,6 +46,9 @@ namespace AuthServer
         private void CreateRefreshToken(AuthenticationTokenCreateContext context)
         {
             //todo: we can decide to skip creating refresh token if app is not a trusted app
+            //like 
+            //var appId = context.Ticket.Identity.Claims.FirstOrDefault(c => c.Type == "sidekick.client.appId");
+            //this way, we can query the db and just fetch the appropriate flag
             context.SetToken(context.SerializeTicket());
         }
 

@@ -1,5 +1,8 @@
 using System;
+
 using System.IdentityModel.Tokens;
+using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.OAuth;
@@ -32,6 +35,9 @@ namespace AuthServer
             {
                 throw new ArgumentNullException("data");
             }
+
+          //todo get individual expiry for each token like this
+            //var tokenExpiry = data.Identity.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Expired);
 
             var issuer = "http://oauth.sidekick.com";
             var audience = "developers.sidekick.com";
