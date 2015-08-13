@@ -1,0 +1,42 @@
+﻿@model AuthServer.Controllers.OAuthModel
+@{
+    ViewBag.Title = "Authorize App";
+}
+
+<h2>@ViewBag.Title.</h2>
+
+@using (Html.BeginForm("Authorize", "OAuth", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <h4>@Model.AppName (developed by @Model.Developer) wants the following permissions from your account.</h4>
+    <h5>Description: @Model.AppDescription</h5>
+    <hr />
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+
+    <div class="list-group">
+        @foreach (var item in Model.Scopes)
+        {
+
+        <a href="#" class="list-group-item">
+            <h4 class="list-group-item-heading">@item.Alias</h4>
+            <p class="list-group-item-text">@item.Description</p>
+        </a>
+        
+
+        }
+    </div>
+
+
+    <p class="text-info">You may contact the developer at @Model.DeveloperEmail</p>
+    
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" class="btn btn-success" name="submit.Grant" value="Accept" />
+            <input type="submit" class="btn btn-danger" name="submit.Deny" value="Reject" />
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

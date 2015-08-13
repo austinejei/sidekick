@@ -6,7 +6,7 @@ namespace DataLayer
     {
         public int Id { get; set; }
 
-        public int ApiAccountId { get; set; }
+        public int AppId { get; set; }
         public virtual App App { get; set; }
 
         public int OAuthScopeId { get; set; }
