@@ -70,6 +70,10 @@
     <Compile Include="Migrations\201508140937075_UserAppScope.Designer.cs">
       <DependentUpon>201508140937075_UserAppScope.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201508141832504_App_Added_SsoEncryptionKey.cs" />
+    <Compile Include="Migrations\201508141832504_App_Added_SsoEncryptionKey.Designer.cs">
+      <DependentUpon>201508141832504_App_Added_SsoEncryptionKey.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="OAuthScope.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -89,6 +93,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201508140937075_UserAppScope.resx">
       <DependentUpon>201508140937075_UserAppScope.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201508141832504_App_Added_SsoEncryptionKey.resx">
+      <DependentUpon>201508141832504_App_Added_SsoEncryptionKey.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

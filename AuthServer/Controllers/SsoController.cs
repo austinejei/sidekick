@@ -64,7 +64,7 @@ namespace AuthServer.Controllers
               RedirectPermanent(redirectUrl + "?error=client_not_trusted&state=" + Request.QueryString.Get("state"));
             }
 
-            const string ssoKey = "345685uryjfhdvbsvbdfghjfgihotreywtreasdxgfvjhkilgkhmvn-=bsdrt3456"; //must be given to sso client for decryption
+            string ssoKey = app.SsoEncryptionKey;//"345685uryjfhdvbsvbdfghjfgihotreywtreasdxgfvjhkilgkhmvn-=bsdrt3456"; //must be given to sso client for decryption
 
             var ssoToken = JsonWebToken.Encode(JsonConvert.SerializeObject(new
                                                                            {
@@ -78,6 +78,8 @@ namespace AuthServer.Controllers
                                                                                        c =>
                                                                                            c.Type ==
                                                                                            ClaimTypes.GivenName).Value,
+                                                                                        EncKey = ssoKey,
+                                                                                        ClientId = clientId
                                                                            }, new JsonSerializerSettings
                                                                               {
                                                                                   ContractResolver =

@@ -64,6 +64,7 @@ namespace DataLayer.Migrations
                                                               IsActive=true,
                                                               IsTrusted = true,
                                                               AccessTokenExpiry = TimeSpan.FromHours(2),
+                                                              SsoEncryptionKey = "3546yrethgsdfsadgweqytrjghk-=erwsdgbfg12wedsfg890",
                                                               Meta = "{\"rateLimit\":2000}", //API rate limit,
                                                               
                                                           }

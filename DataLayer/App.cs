@@ -28,6 +28,9 @@ namespace DataLayer
         public DateTime DateCreated { get; set; }
 
         public bool IsTrusted { get; set; } //if trusted, we give a refresh token
-        public TimeSpan AccessTokenExpiry { get; set; } //TTL for each access token
+        public TimeSpan AccessTokenExpiry { get; set; }
+        public string SsoEncryptionKey { get; set; }
+
+//TTL for each access token
     }
 }
