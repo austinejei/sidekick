@@ -11,6 +11,12 @@ namespace AuthServer
 {
     public class SidekickOAuthProvider : OAuthAuthorizationServerProvider
     {
+        private readonly ApplicationDbContext _dbContext;
+
+        public SidekickOAuthProvider()
+        {
+            _dbContext = new ApplicationDbContext();
+        }
         public override Task AuthorizationEndpointResponse(OAuthAuthorizationEndpointResponseContext context)
         {
             
@@ -35,10 +41,9 @@ namespace AuthServer
             {
                 case SignInStatus.Success:
 
-                    using (var userRepo = new ApplicationDbContext())
-                    {
-                        user = await userRepo.Users.FirstOrDefaultAsync(u => u.UserName == context.UserName);
-                    }
+                  
+                        user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserName == context.UserName);
+                    
 
                     if (user != null)
                     {
@@ -47,8 +52,10 @@ namespace AuthServer
                         var clientName = context.OwinContext.Get<string>("sidekick.client.name");
                         var clientMeta = context.OwinContext.Get<string>("sidekick.client.meta");
                         var appId = context.OwinContext.Get<int>("sidekick.client.appId");
+                        var appName = context.OwinContext.Get<string>("sidekick.client.appName");
                         var isTrusted = context.OwinContext.Get<bool>("sidekick.client.istrusted");
                         var tokenExpiry = context.OwinContext.Get<TimeSpan>("sidekick.client.tokenexpiry");
+                        var scopeList = context.OwinContext.Get<List<string>>("sidekick.client.scopes");
                         var claims = new List<Claim>
                                      {
                                          new Claim(ClaimTypes.Name, context.UserName),
@@ -62,11 +69,18 @@ namespace AuthServer
                                          new Claim("sidekick.client.name", clientName),
                                          new Claim("sidekick.client.meta", clientMeta),
                                          new Claim("sidekick.client.appId", appId.ToString()),
+                                         new Claim("sidekick.client.appName", appName),
                             
 
                                      };
 
+                      
+
                         identity.AddClaims(claims);
+                        foreach (var scope in scopeList)
+                        {
+                            identity.AddClaim(new Claim("urn:oauth:scope", scope));
+                        }
                         context.Validated(identity);
                     }
 
@@ -82,6 +96,8 @@ namespace AuthServer
                     throw new ArgumentOutOfRangeException();
             }
         }
+
+       
 
         public override async Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
         {
@@ -100,10 +116,9 @@ namespace AuthServer
                 {
                     
 
-                    using (var db = new ApplicationDbContext())
-                    {
-                        app = await db.Apps.FirstOrDefaultAsync(c => c.ClientId == clientId && c.ClientSecret == clientSecret);
-                    }
+                   
+                        app = await _dbContext.Apps.FirstOrDefaultAsync(c => c.ClientId == clientId && c.ClientSecret == clientSecret);
+                    
                     
                 }
                 catch (Exception exception)
@@ -133,10 +148,19 @@ namespace AuthServer
 
                     context.OwinContext.Set("sidekick.client.name", app.Username);
                     context.OwinContext.Set("sidekick.client.appId", app.Id);
+                    context.OwinContext.Set("sidekick.client.appName", app.Name);
                     context.OwinContext.Set("sidekick.client.meta", app.Meta);
                     context.OwinContext.Set("sidekick.client.istrusted", app.IsTrusted);
                     context.OwinContext.Set("sidekick.client.tokenexpiry", app.AccessTokenExpiry);
-      
+
+                    var scopeList = new List<string>();
+
+                    foreach (var scope in app.AppScopes)
+                    {
+                        scopeList.Add(scope.OAuthScope.Name);
+                    }
+
+                    context.OwinContext.Set("sidekick.client.scopes", scopeList);
 
                     context.Validated();
                 }
@@ -186,6 +210,7 @@ namespace AuthServer
 
                                  new Claim("sidekick.client.name", app.Username),
                                  new Claim("sidekick.client.appId", app.Id.ToString()),
+                                 new Claim("sidekick.client.appName", app.Name),
                                  new Claim("sidekick.client.meta", app.Meta),
                                  new Claim("sidekick.client.istrusted", app.IsTrusted.ToString()),
                                  new Claim(ClaimTypes.Expiration, app.AccessTokenExpiry.ToString()),

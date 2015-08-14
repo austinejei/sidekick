@@ -62,7 +62,7 @@ namespace ApiServer
 
             app.UseCors(CorsOptions.AllowAll);
 
-            CashBaggEventsManager.Start();
+            SidekickEventsManager.Start();
             
             app.MapSignalR();
 
@@ -94,7 +94,7 @@ namespace ApiServer
                             Activator.CreateInstance(Type.GetType(moduleElement.Type)) as IEventhandlerModule;
                         if (eventhandlerModule != null)
                         {
-                            eventhandlerModule.Initialize(CashBaggEventsManager.Instance.Events);
+                            eventhandlerModule.Initialize(SidekickEventsManager.Instance.Events);
                             
                             EventhandlerModules.Add(eventhandlerModule);
                             Logger.Debug("{0} is initialized.", moduleElement.Name);

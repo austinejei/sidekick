@@ -71,7 +71,7 @@ namespace ApiServer
                     
                 }
 
-                //Startup.EventhandlerModules.ForEach(e => e.Release(CashBaggEventsManager.Instance.Events));
+                //Startup.EventhandlerModules.ForEach(e => e.Release(SidekickEventsManager.Instance.Events));
                 _cashBaggApiListener.Dispose();
                 Log.Info("HTTP listener has been successfully shut down :|");
             }

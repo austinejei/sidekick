@@ -46,10 +46,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CashBaggActivitySignaler.cs" />
+    <Compile Include="SidekickActivitySignaler.cs" />
     <Compile Include="SidekickEvents.cs" />
-    <Compile Include="CashBaggEventsManager.cs" />
-    <Compile Include="CashBaggNinjectModule.cs" />
+    <Compile Include="SidekickEventsManager.cs" />
+    <Compile Include="SidekickNinjectModule.cs" />
     <Compile Include="EmailSentEventArgs.cs" />
     <Compile Include="IEventhandlerModule.cs" />
     <Compile Include="NotificationPublisher.cs" />
