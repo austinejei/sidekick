@@ -51,14 +51,14 @@ namespace AuthServer.Controllers
                     RedirectPermanent(redirectUrl + "?error=access_denied&state=" + Request.QueryString.Get("state"));
             }
 
-            if (app.IsActive)
+            if (!app.IsActive)
             {
                 return
                    RedirectPermanent(redirectUrl + "?error=client_not_active&state=" + Request.QueryString.Get("state"));
             }
 
 
-            if (app.IsTrusted)
+            if (!app.IsTrusted)
             {
                 return
               RedirectPermanent(redirectUrl + "?error=client_not_trusted&state=" + Request.QueryString.Get("state"));
