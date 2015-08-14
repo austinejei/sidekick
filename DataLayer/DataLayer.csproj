@@ -62,6 +62,14 @@
     <Compile Include="Migrations\201508131028387_initial_migration.Designer.cs">
       <DependentUpon>201508131028387_initial_migration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201508140934443_App_Added_IsTrusted_And_AccessTokenExpiry.cs" />
+    <Compile Include="Migrations\201508140934443_App_Added_IsTrusted_And_AccessTokenExpiry.Designer.cs">
+      <DependentUpon>201508140934443_App_Added_IsTrusted_And_AccessTokenExpiry.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201508140937075_UserAppScope.cs" />
+    <Compile Include="Migrations\201508140937075_UserAppScope.Designer.cs">
+      <DependentUpon>201508140937075_UserAppScope.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="OAuthScope.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -75,6 +83,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201508131028387_initial_migration.resx">
       <DependentUpon>201508131028387_initial_migration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201508140934443_App_Added_IsTrusted_And_AccessTokenExpiry.resx">
+      <DependentUpon>201508140934443_App_Added_IsTrusted_And_AccessTokenExpiry.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201508140937075_UserAppScope.resx">
+      <DependentUpon>201508140937075_UserAppScope.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

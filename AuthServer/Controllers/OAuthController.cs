@@ -58,6 +58,13 @@ namespace AuthServer.Controllers
 
                 var app = _dbContext.Apps.FirstOrDefault(a => a.ClientId == clientId);
 
+                identity.AddClaim(new Claim(ClaimTypes.Expiration, app.AccessTokenExpiry.ToString()));
+                identity.AddClaim(new Claim("sidekick.client.istrusted", app.IsTrusted.ToString()));
+
+                identity.AddClaim(new Claim("sidekick.client.name", app.Username));
+                identity.AddClaim(new Claim("sidekick.client.meta", app.Meta));
+                identity.AddClaim(new Claim("sidekick.client.appId", app.Id.ToString()));
+
                 var userExistingApp =
                     await
                         _dbContext.UserApps.FirstOrDefaultAsync(

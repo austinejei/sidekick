@@ -37,13 +37,14 @@ namespace AuthServer
             }
 
           //todo get individual expiry for each token like this
-            //var tokenExpiry = data.Identity.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Expired);
+            var tokenExpiry = TimeSpan.Parse(data.Identity.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Expiration).Value);
 
             var issuer = "http://oauth.sidekick.com";
             var audience = "developers.sidekick.com";
             var key = Convert.FromBase64String(Convert.ToBase64String(Encoding.UTF8.GetBytes("35476utyhjdvcadye6746574retdfghjn"))); //signing key, modify it during production
             var now = DateTime.Now;
-            var expires = now.AddMinutes(_options.AccessTokenExpireTimeSpan.TotalMinutes);
+            //var expires = now.AddMinutes(_options.AccessTokenExpireTimeSpan.TotalMinutes);
+            var expires = now.AddMinutes(tokenExpiry.TotalMinutes);
             var signingCredentials = new SigningCredentials(new InMemorySymmetricSecurityKey(key), SignatureAlgorithm,
                 DigestAlgorithm);
             var token = new JwtSecurityToken(issuer, audience, data.Identity.Claims, now, expires, signingCredentials);

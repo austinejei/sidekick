@@ -62,6 +62,8 @@ namespace DataLayer.Migrations
                                                               RedirectUrl = "https://www.getpostman.com/oauth2/callback",
                                                               Username = "kwaku.dev@sidekick.com",
                                                               IsActive=true,
+                                                              IsTrusted = true,
+                                                              AccessTokenExpiry = TimeSpan.FromHours(2),
                                                               Meta = "{\"rateLimit\":2000}", //API rate limit,
                                                               
                                                           }

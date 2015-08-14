@@ -47,6 +47,8 @@ namespace AuthServer
                         var clientName = context.OwinContext.Get<string>("sidekick.client.name");
                         var clientMeta = context.OwinContext.Get<string>("sidekick.client.meta");
                         var appId = context.OwinContext.Get<int>("sidekick.client.appId");
+                        var isTrusted = context.OwinContext.Get<bool>("sidekick.client.istrusted");
+                        var tokenExpiry = context.OwinContext.Get<TimeSpan>("sidekick.client.tokenexpiry");
                         var claims = new List<Claim>
                                      {
                                          new Claim(ClaimTypes.Name, context.UserName),
@@ -54,6 +56,8 @@ namespace AuthServer
                                          new Claim(ClaimTypes.MobilePhone, user.PhoneNumber),
                                          new Claim(ClaimTypes.Sid, user.Id),
                                          new Claim(ClaimTypes.GivenName, user.Fullname),
+                                         new Claim(ClaimTypes.Expiration,tokenExpiry.ToString()),
+                                         new Claim("sidekick.client.istrusted",isTrusted.ToString()),
          
                                          new Claim("sidekick.client.name", clientName),
                                          new Claim("sidekick.client.meta", clientMeta),
@@ -130,6 +134,8 @@ namespace AuthServer
                     context.OwinContext.Set("sidekick.client.name", app.Username);
                     context.OwinContext.Set("sidekick.client.appId", app.Id);
                     context.OwinContext.Set("sidekick.client.meta", app.Meta);
+                    context.OwinContext.Set("sidekick.client.istrusted", app.IsTrusted);
+                    context.OwinContext.Set("sidekick.client.tokenexpiry", app.AccessTokenExpiry);
       
 
                     context.Validated();
@@ -181,6 +187,8 @@ namespace AuthServer
                                  new Claim("sidekick.client.name", app.Username),
                                  new Claim("sidekick.client.appId", app.Id.ToString()),
                                  new Claim("sidekick.client.meta", app.Meta),
+                                 new Claim("sidekick.client.istrusted", app.IsTrusted.ToString()),
+                                 new Claim(ClaimTypes.Expiration, app.AccessTokenExpiry.ToString()),
 
 
                              };

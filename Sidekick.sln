@@ -33,6 +33,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiThrottling", "ApiThrottl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiHandler", "ApiHandler\ApiHandler.csproj", "{3BFFEFB9-5E98-477B-B14E-7B4ADACD5AAB}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ClientLibrary", "ClientLibrary", "{62CED753-025B-418B-B9EE-EB1488276B28}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sidekick.OAuthClient", "Sidekick.OAuthClient\Sidekick.OAuthClient.csproj", "{5D5CBAE9-6D3D-4813-97DD-83D63AE266BB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,6 +83,10 @@ Global
 		{3BFFEFB9-5E98-477B-B14E-7B4ADACD5AAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3BFFEFB9-5E98-477B-B14E-7B4ADACD5AAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3BFFEFB9-5E98-477B-B14E-7B4ADACD5AAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D5CBAE9-6D3D-4813-97DD-83D63AE266BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D5CBAE9-6D3D-4813-97DD-83D63AE266BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D5CBAE9-6D3D-4813-97DD-83D63AE266BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D5CBAE9-6D3D-4813-97DD-83D63AE266BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -93,5 +101,6 @@ Global
 		{BDF6770A-BEA2-4BCF-8DE9-40FAFF22F63D} = {D474AFCF-8589-49AD-8440-C54261F35365}
 		{5A2CC4B9-32CB-45DB-90B4-B5C9693E21C8} = {D474AFCF-8589-49AD-8440-C54261F35365}
 		{3BFFEFB9-5E98-477B-B14E-7B4ADACD5AAB} = {D474AFCF-8589-49AD-8440-C54261F35365}
+		{5D5CBAE9-6D3D-4813-97DD-83D63AE266BB} = {62CED753-025B-418B-B9EE-EB1488276B28}
 	EndGlobalSection
 EndGlobal

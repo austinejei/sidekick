@@ -40,16 +40,21 @@ namespace AuthServer
 
         private void ReceiveRefreshToken(AuthenticationTokenReceiveContext context)
         {
+            
             context.DeserializeTicket(context.Token);
         }
 
         private void CreateRefreshToken(AuthenticationTokenCreateContext context)
         {
-            //todo: we can decide to skip creating refresh token if app is not a trusted app
-            //like 
-            //var appId = context.Ticket.Identity.Claims.FirstOrDefault(c => c.Type == "sidekick.client.appId");
-            //this way, we can query the db and just fetch the appropriate flag
-            context.SetToken(context.SerializeTicket());
+        
+            var isTrusted = bool.Parse(context.Ticket.Identity.Claims.FirstOrDefault(c => c.Type == "sidekick.client.istrusted").Value);
+     
+
+            if (isTrusted)
+            {
+                context.SetToken(context.SerializeTicket());
+            }
+          
         }
 
         private void ReceiveAuthenticationCode(AuthenticationTokenReceiveContext context)
