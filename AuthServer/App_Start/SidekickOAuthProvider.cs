@@ -23,10 +23,10 @@ namespace AuthServer
             return base.AuthorizationEndpointResponse(context);
         }
 
-        public override Task GrantCustomExtension(OAuthGrantCustomExtensionContext context)
+        public override  Task GrantCustomExtension(OAuthGrantCustomExtensionContext context)
         {
-            //todo: this will be used for SSO
             return base.GrantCustomExtension(context);
+
         }
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)

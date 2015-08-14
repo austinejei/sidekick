@@ -30,19 +30,27 @@ namespace ApiHandler
 
             var userIdentity = User.Identity as ClaimsIdentity;
 
-            
+            var appName = userIdentity.Claims.FirstOrDefault(c => c.Type == "sidekick.client.appName").Value;
+
             await Task.Delay(4000);
             Logger.Debug("email sent");
             Logger.Debug("raising events after sending email");
             await SidekickEventsManager.Instance.Events.OnEmailSent(new EmailSentEventArgs
             {
                 Body = model.Body,
-                Process = userIdentity.Claims.FirstOrDefault(c => c.Type == "sidekick.client.appName").Value,
+                Subject = model.Title,
+                Process = appName,
                 Receipient = model.To,
                 Sender = userIdentity.Name
             });
 
+            Logger.Debug("sending signalr event to connected clients");
+            await
+                SidekickEventsManager.Instance.ActivitySignaler.ReportAsLiveFeed(DateTime.Now.ToString("U"),
+                    string.Format("{0} has just sent an email to {1}",appName,model.To));
 
+
+                Logger.Debug("done!");
             return Ok(new
                       {
                           Id = Guid.NewGuid().ToString()
