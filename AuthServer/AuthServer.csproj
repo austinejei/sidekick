@@ -173,6 +173,8 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\SidekickOAuthProvider.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Components\JsonWebToken.cs" />
+    <Compile Include="Components\JwtHashAlgorithm.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\SsoController.cs" />
     <Compile Include="Models\AppScopeList.cs" />

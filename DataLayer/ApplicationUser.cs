@@ -16,6 +16,9 @@ namespace DataLayer
             var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
             // Add custom user claims here
             
+            userIdentity.AddClaim(new Claim(ClaimTypes.Email,this.Email));
+            userIdentity.AddClaim(new Claim(ClaimTypes.GivenName,this.Fullname));
+
             return userIdentity;
         }
 

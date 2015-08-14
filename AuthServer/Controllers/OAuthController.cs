@@ -30,11 +30,29 @@ namespace AuthServer.Controllers
             }
 
 
+
             var scopes = (Request.QueryString.Get("scope") ?? "");
             var scopeList = scopes.Split(' ');
             var clientId = Request.QueryString.Get("client_id") ?? "";
 
-            
+            var redirectUrl = Request.QueryString.Get("redirect_url") ?? "";
+
+
+            var app = await _dbContext.Apps.FirstOrDefaultAsync(a => a.ClientId == clientId);
+
+            if (app==null)
+            {
+                return
+                    RedirectPermanent(redirectUrl + "?error=client_not_found&state=" + Request.QueryString.Get("state"));
+            }
+
+            if (!app.IsActive)
+            {
+                return
+                    RedirectPermanent(redirectUrl + "?error=client_not_active&state=" + Request.QueryString.Get("state"));
+            }
+          
+          
             string msg;
             OAuthModel model;
             if (!ScopesAreValid(scopeList, clientId, out msg,out model))
@@ -56,7 +74,7 @@ namespace AuthServer.Controllers
                 }
 
 
-                var app = _dbContext.Apps.FirstOrDefault(a => a.ClientId == clientId);
+          
 
                 identity.AddClaim(new Claim(ClaimTypes.Expiration, app.AccessTokenExpiry.ToString()));
                 identity.AddClaim(new Claim("sidekick.client.istrusted", app.IsTrusted.ToString()));
@@ -105,10 +123,9 @@ namespace AuthServer.Controllers
 
             if (!string.IsNullOrEmpty(Request.Form.Get("submit.Deny")))
             {
-                var redirectUrl = Request.QueryString.Get("redirect_url") ?? "";
-
                 return
-                    RedirectPermanent(redirectUrl + "?error=access_denied&state=" + Request.QueryString.Get("state"));
+               RedirectPermanent(redirectUrl + "?error=access_denied&state=" + Request.QueryString.Get("state"));
+
             }
 
             return View(model);

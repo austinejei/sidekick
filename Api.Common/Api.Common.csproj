@@ -50,6 +50,7 @@
     <Compile Include="Configurations\HttpApiHandlersConfigurationSection.cs" />
     <Compile Include="Crypto.cs" />
     <Compile Include="JsonWebToken.cs" />
+    <Compile Include="JwtHashAlgorithm.cs" />
     <Compile Include="PinGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

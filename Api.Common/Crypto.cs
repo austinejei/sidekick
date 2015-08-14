@@ -5,18 +5,10 @@ using System.Text;
 
 namespace Api.Common
 {
-
-    public enum JwtHashAlgorithm
-    {
-        RS256,
-        HS384,
-        HS512
-    }
-
     public class Crypto
     {
         private static byte[] _salt = Encoding.ASCII.GetBytes("o6806642kbM7c5");
-
+        
         /// <summary>
         /// Encrypt the given string using AES.  The string can be decrypted using 
         /// DecryptStringAES().  The sharedSecret parameters must match.
