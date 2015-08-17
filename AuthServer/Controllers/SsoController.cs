@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using AuthServer.Components;
 using DataLayer;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 
 namespace AuthServer.Controllers
@@ -19,7 +20,7 @@ namespace AuthServer.Controllers
     {
         private readonly ApplicationDbContext _dbContext = new ApplicationDbContext();
 
-        // GET: SSO
+        // GET: sso?client_id=354yeghdsfc&action=signin&state=45eyrtgfsdbs3&redirect_url=https://www.getpostman.com/oauth2/callback
        
         public async Task<ActionResult> Index()
         {
@@ -38,7 +39,18 @@ namespace AuthServer.Controllers
       
             var app = await _dbContext.Apps.FirstOrDefaultAsync(a => a.ClientId == clientId);
             var redirectUrl = Request.QueryString.Get("redirect_url") ?? "";
+            var action = Request.QueryString.Get("action") ?? "";
 
+            if (string.IsNullOrEmpty(redirectUrl))
+            {
+                return Content("redirectUrl is empty :(");
+            }
+
+            if (string.IsNullOrEmpty(action))
+            {
+                return
+                   RedirectPermanent(redirectUrl + "?error=empty_action&state=" + Request.QueryString.Get("state"));
+            }
             if (string.IsNullOrEmpty(redirectUrl))
             {
                 return
@@ -48,9 +60,14 @@ namespace AuthServer.Controllers
             {
   
                 return
-                    RedirectPermanent(redirectUrl + "?error=access_denied&state=" + Request.QueryString.Get("state"));
+                    RedirectPermanent(redirectUrl + "?error=client_not_found&state=" + Request.QueryString.Get("state"));
             }
+            if (!app.RedirectUrl.Equals(redirectUrl,StringComparison.CurrentCultureIgnoreCase))
+            {
 
+                return
+                    RedirectPermanent(redirectUrl + "?error=redirecturl_mismatch&state=" + Request.QueryString.Get("state"));
+            }
             if (!app.IsActive)
             {
                 return
@@ -64,39 +81,86 @@ namespace AuthServer.Controllers
               RedirectPermanent(redirectUrl + "?error=client_not_trusted&state=" + Request.QueryString.Get("state"));
             }
 
-            string ssoKey = app.SsoEncryptionKey;//"345685uryjfhdvbsvbdfghjfgihotreywtreasdxgfvjhkilgkhmvn-=bsdrt3456"; //must be given to sso client for decryption
+            if (string.IsNullOrEmpty(app.Meta))
+            {
+                return
+              RedirectPermanent(redirectUrl + "?error=sso_not_configured_for_client&state=" + Request.QueryString.Get("state"));
+            }
 
-            var ssoToken = JsonWebToken.Encode(JsonConvert.SerializeObject(new
-                                                                           {
-                                                                               Username = identity.Name,
-                                                                               Email =
-                                                                                   identity.Claims.FirstOrDefault(
-                                                                                       c => c.Type == ClaimTypes.Email)
-                                                                                       .Value,
-                                                                               Name =
-                                                                                   identity.Claims.FirstOrDefault(
-                                                                                       c =>
-                                                                                           c.Type ==
-                                                                                           ClaimTypes.GivenName).Value,
-                                                                                        EncKey = ssoKey,
-                                                                                        ClientId = clientId
-                                                                           }, new JsonSerializerSettings
-                                                                              {
-                                                                                  ContractResolver =
-                                                                                      new CamelCasePropertyNamesContractResolver
-                                                                                      ()
-                                                                              }),
-                ssoKey, JwtHashAlgorithm.HS512);
+            var meta = JObject.Parse(app.Meta);
+             var allowSsoString = meta["allowSso"];
+            if (allowSsoString == null)
+            {
+
+                  return
+              RedirectPermanent(redirectUrl + "?error=sso_not_configured_for_client&state=" + Request.QueryString.Get("state"));
+            }
+            var allowSso = bool.Parse(allowSsoString.ToString());
+            if (!allowSso)
+            {
+                return
+                RedirectPermanent(redirectUrl + "?error=client_not_allowed_sso&state=" + Request.QueryString.Get("state"));
+            }
+
+            string ssoKey = app.SsoEncryptionKey;
 
 
-            return
-            RedirectPermanent(redirectUrl + "?token="+ssoToken+"&state=" + Request.QueryString.Get("state"));
+            if (action.Equals("signin",StringComparison.CurrentCultureIgnoreCase))
+            {
+                var ssoToken = JsonWebToken.Encode(JsonConvert.SerializeObject(new
+                {
+                    Username = identity.Name,
+                    Email =
+                        identity.Claims.FirstOrDefault(
+                            c => c.Type == ClaimTypes.Email)
+                            .Value,
+                    Name =
+                        identity.Claims.FirstOrDefault(
+                            c =>
+                                c.Type ==
+                                ClaimTypes.GivenName).Value,
+                    EncKey = ssoKey,
+                    ClientId = clientId,
+                    Action = action
+                }, new JsonSerializerSettings
+                {
+                    ContractResolver =
+                        new CamelCasePropertyNamesContractResolver
+                        ()
+                }),
+            ssoKey, JwtHashAlgorithm.HS512);
+
+
+                return
+                RedirectPermanent(redirectUrl + "?token=" + ssoToken + "&state=" + Request.QueryString.Get("state"));
+            }
+
+            if (action.Equals("signout", StringComparison.CurrentCultureIgnoreCase))
+            {
+                var authentication = HttpContext.GetOwinContext().Authentication;
+
+                authentication.SignOut();
+                var ssoToken = JsonWebToken.Encode(JsonConvert.SerializeObject(new
+                                                                               {
+                                                                                   Username = User.Identity.Name,
+                                                                                   ClientId = clientId,
+                                                                                   Action = action
+                                                                               }, new JsonSerializerSettings
+                                                                                  {
+                                                                                      ContractResolver =
+                                                                                          new CamelCasePropertyNamesContractResolver
+                                                                                          ()
+                                                                                  }),
+                    ssoKey, JwtHashAlgorithm.HS512);
+
+
+                return
+                    RedirectPermanent(redirectUrl + "?token=" + ssoToken + "&state=" + Request.QueryString.Get("state"));
+            }
+
+            return Content("unknown action");
+
         }
     }
 
-    public class SsoModel
-    {
-        public string Client { get; set; }
-    
-    }
 }
