@@ -119,6 +119,7 @@ namespace AuthServer.Controllers
                             c =>
                                 c.Type ==
                                 ClaimTypes.GivenName).Value,
+                    Roles = identity.Claims.Where(c=>c.Type==ClaimTypes.Role).Select(r=>r.Value).ToList(),
                     EncKey = ssoKey,
                     ClientId = clientId,
                     Action = action

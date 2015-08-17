@@ -25,10 +25,12 @@ namespace ApiHandler
 
             return Ok(new
                       {
+                          user.Id,
                           user.Fullname,
                           user.Email,
                           user.PhoneNumber,
                           user.IsActive,
+                          
                       });
         }
     }
