@@ -11,6 +11,8 @@
     @*@Html.AntiForgeryToken()*@
     <h4>@Model.AppName (developed by @Model.Developer) wants the following permissions from your account.</h4>
     <h5>Description: @Model.AppDescription</h5>
+
+    <small>@ViewBag.ReinstallMessage</small>
     <hr />
     @Html.ValidationSummary("", new { @class = "text-danger" })
 

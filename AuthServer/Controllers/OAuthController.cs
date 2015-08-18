@@ -61,35 +61,53 @@ namespace AuthServer.Controllers
            
             }
 
+            var userExistingApp =
+                   await
+                       _dbContext.UserApps.FirstOrDefaultAsync(
+                           a => a.AppId == app.Id && a.Username == User.Identity.Name);
+
+            if (userExistingApp!=null)
+            {
+                if (!userExistingApp.IsInstalled)
+                {
+                    ViewBag.ReinstallMessage =
+                        string.Format("Hi {0}, you uninstalled {1} on {2}. You need to grant permissions again.",
+                            User.Identity.Name, app.Name, userExistingApp.DateUninstalled.Value.ToString("F"));
+                }
+                else
+                {
+                    identity = new ClaimsIdentity(identity.Claims, "Bearer", identity.NameClaimType, identity.RoleClaimType);
+                    foreach (var scope in scopeList)
+                    {
+                        identity.AddClaim(new Claim("urn:oauth:scope", scope));
+                    }
+
+
+
+
+                    identity.AddClaim(new Claim(ClaimTypes.Expiration, app.AccessTokenExpiry.ToString()));
+                    identity.AddClaim(new Claim("sidekick.client.istrusted", app.IsTrusted.ToString()));
+
+                    identity.AddClaim(new Claim("sidekick.client.name", app.Username));
+                    identity.AddClaim(new Claim("sidekick.client.meta", app.Meta));
+                    identity.AddClaim(new Claim("sidekick.client.appId", app.Id.ToString()));
+                    identity.AddClaim(new Claim("sidekick.client.appName", app.Name));
+
+
+                    authentication.SignIn(identity);
+                    return View(model);
+                }
+            }
+
             ViewBag.Scopes = scopes;
             ViewBag.ClientId = clientId;
 
             if (!string.IsNullOrEmpty(Request.Form.Get("submit.Grant")))
             {
           
-                identity = new ClaimsIdentity(identity.Claims, "Bearer", identity.NameClaimType, identity.RoleClaimType);
-                foreach (var scope in scopeList)
-                {
-                    identity.AddClaim(new Claim("urn:oauth:scope", scope));
-                }
-
-
-          
-
-                identity.AddClaim(new Claim(ClaimTypes.Expiration, app.AccessTokenExpiry.ToString()));
-                identity.AddClaim(new Claim("sidekick.client.istrusted", app.IsTrusted.ToString()));
-
-                identity.AddClaim(new Claim("sidekick.client.name", app.Username));
-                identity.AddClaim(new Claim("sidekick.client.meta", app.Meta));
-                identity.AddClaim(new Claim("sidekick.client.appId", app.Id.ToString()));
-                identity.AddClaim(new Claim("sidekick.client.appName", app.Name));
-
-                var userExistingApp =
-                    await
-                        _dbContext.UserApps.FirstOrDefaultAsync(
-                            a => a.AppId == app.Id && a.Username == User.Identity.Name);
-
-                if (userExistingApp!=null)
+              
+               
+                if (userExistingApp==null)//if it's not installed
                 {
                     //install the app onto the user's account
                     _dbContext.UserApps.Add(new UserApp
@@ -115,7 +133,47 @@ namespace AuthServer.Controllers
 
                     await _dbContext.SaveChangesAsync();
                 }
-          
+                else
+                {
+                    if (!userExistingApp.IsInstalled) //it was uninstalled
+                    {
+                        userExistingApp.IsInstalled = true;
+                        userExistingApp.DateUninstalled = null;
+                        //the reason we're doing this is because, when the user uninstalls the app, we need to remove all the userappscope relations,
+                        //then during installation, we get them back
+                        foreach (var appScope in app.AppScopes)
+                        {
+                            _dbContext.UserAppScopes.Add(new UserAppScope
+                            {
+                                AppId = app.Id,
+                                Enabled = true,
+                                OAuthScopeId = appScope.OAuthScopeId,
+                                Username = User.Identity.Name
+                            });
+                        }
+
+                        _dbContext.Entry(userExistingApp).State = EntityState.Modified;
+                        await _dbContext.SaveChangesAsync();
+                    }
+                }
+
+                identity = new ClaimsIdentity(identity.Claims, "Bearer", identity.NameClaimType, identity.RoleClaimType);
+                foreach (var scope in scopeList)
+                {
+                    identity.AddClaim(new Claim("urn:oauth:scope", scope));
+                }
+
+
+
+
+                identity.AddClaim(new Claim(ClaimTypes.Expiration, app.AccessTokenExpiry.ToString()));
+                identity.AddClaim(new Claim("sidekick.client.istrusted", app.IsTrusted.ToString()));
+
+                identity.AddClaim(new Claim("sidekick.client.name", app.Username));
+                identity.AddClaim(new Claim("sidekick.client.meta", app.Meta));
+                identity.AddClaim(new Claim("sidekick.client.appId", app.Id.ToString()));
+                identity.AddClaim(new Claim("sidekick.client.appName", app.Name));
+
 
                 authentication.SignIn(identity);
             }
