@@ -1,10 +1,6 @@
-﻿using System;
-using System.IO;
-using System.Net;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Api.Events;
 using NLog;
-using NLog.Internal;
 
 namespace ApiEventHandler
 {

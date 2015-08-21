@@ -16,7 +16,7 @@ namespace ApiHandler
     public class EmailsController : ApiController
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        private readonly ApplicationDbContext _dbContext = new ApplicationDbContext();
+
 
         [HttpPost, Route, OAuthScope("emails.send")]
         public async Task<IHttpActionResult> ListUserProfile(EmailModel model)
@@ -50,7 +50,7 @@ namespace ApiHandler
                     string.Format("{0} has just sent an email to {1}",appName,model.To));
 
 
-                Logger.Debug("done!");
+            Logger.Debug("done!");
             return Ok(new
                       {
                           Id = Guid.NewGuid().ToString()
