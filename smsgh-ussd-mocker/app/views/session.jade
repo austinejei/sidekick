@@ -1,0 +1,75 @@
+extends shared/_layout.jade
+
+block content
+  .row
+    .col-xs-12.clearfix
+      h2.pull-left Session
+      a(href='/').btn.btn-primary.margin-top-20.pull-right New Session
+
+  .row
+    .col-sm-6
+      - var request = session.request;
+      - var response = session.response;
+      if request.Type !== 'Timeout'
+        .session-ui
+          .session-ui-content
+            p!= response.Message
+            case response.Type
+              when 'Response'
+                form(action='/session/response', method='POST')#responseForm.form
+                  .form-group
+                    input(name='UserInput').form-control
+                  button(type='submit').btn.btn-default.margin-right-10 Send
+                  a(href='/session/release').btn.btn-default Cancel
+              when 'Release'
+                  a(href='/').btn.btn-default OK
+        p: a(href='/session/timeout').btn.btn-warning.margin-top-10 Send Timeout
+      else
+        p Timout sent!
+        p: a(href='/').btn.btn-primary New Session
+
+
+    .col-sm-6
+      h3 USSD Client URL
+      p= session.ClientUrl
+
+      h3 Request:
+
+      table.table.table-bordered
+        tr
+          th Session ID
+          td= request.SessionId
+        tr
+          th Service Code
+          td= request.ServiceCode
+        tr
+          th Mobile
+          td= request.Mobile
+        tr
+          th Type
+          td= request.Type
+        tr
+          th Message
+          td= request.Message
+        tr
+          th Operator
+          td= request.Operator
+        tr
+          th Sequence
+          td= request.Sequence
+        tr
+          th Client State
+          td= request.ClientState
+
+      h3 Response:
+
+      table.table.table-bordered
+        tr
+          th Type
+          td= response.Type
+        tr
+          th Message
+          td!= response.Message
+        tr
+          th Client State
+          td= response.ClientState

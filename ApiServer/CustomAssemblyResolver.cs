@@ -57,7 +57,7 @@ namespace ApiServer
                                 assemblies.Add(Assembly.LoadFile(httpHandlerConfig.AssemblyLocation));
                             }
 
-                            Logger.Info("added {0} HTTP handler from {1}",httpHandlerConfig.Name,httpHandlerConfig.AssemblyLocation);
+                            Logger.Info("added {0} from {1}",httpHandlerConfig.Name,httpHandlerConfig.AssemblyLocation);
                         }
                     }
 
@@ -66,7 +66,7 @@ namespace ApiServer
             else
             {
                 Logger.Fatal("no HTTP API handlers config section found. Please configure a section for handling HTTP requests...");
-                //throw new Exception("no HTTP API handlers config section found. Please configure a section for handling HTTP requests...");
+    
             }
 
             return assemblies.Distinct().ToList();

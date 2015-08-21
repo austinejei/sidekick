@@ -1,0 +1,58 @@
+extends shared/_layout.jade
+
+block content
+  .row
+    .col-xs-12
+      h2 Initiate a session
+
+      form(method='POST', action='/session/initiate')#initiateForm.form
+        .form-group
+          .col-sm-offset-2.col-sm-10
+            p <strong>*</strong> = Required fields
+        .form-group
+          label.col-sm-2.control-label USSD Client URL *
+          .col-sm-10
+            input(name='Url', value=ClientUrl).form-control
+            span.help-block.
+              URL where USSD Client is running.
+              Example: <strong>http://127.0.0.1:8773/test</strong>.
+        
+        .form-group
+          label.col-sm-2.control-label Service Code
+          .col-sm-10
+            input(name='ServiceCode', value=ServiceCode).form-control
+            span.help-block.
+              USSD code assigned to USSD application.
+              Example: <strong>*714*100#</strong>.
+              Will default to this if left blank.
+
+        .form-group
+          label.col-sm-2.control-label Mobile Number
+          .col-sm-10
+            input(name='Mobile', value=Mobile, number).form-control
+            span.help-block.
+              User's mobile phone number.
+              Example: <strong>233244567890</strong>. 
+              Will default to this if left blank.
+
+        .form-group
+          label.col-sm-2.control-label Operator
+          .col-sm-10
+            input(name='Operator', value=Operator).form-control
+            span.help-block.
+              User's mobile network/operator.
+              Example: <strong>mtn</strong>. 
+              Will default to this if left blank.
+
+        .form-group
+          label.col-sm-2.control-label Initiation Message
+          .col-sm-10
+            input(name='InitiationMessage', value=InitiationMessage).form-control
+            span.help-block.
+              USSD code the user dials.
+              Example: <strong>*714*100*1#</strong>.
+              Will default to <strong>Service Code</strong> if left blank.
+
+        .form-group
+          .col-sm-offset-2.col-sm-10
+            button(type='submit').btn.btn-primary Start

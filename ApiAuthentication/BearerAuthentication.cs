@@ -11,6 +11,7 @@ namespace ApiAuthentication
 
         public BearerAuthentication() 
         {
+            
             var issuer = "http://oauth.sidekick.com";
             var audience = "developers.sidekick.com";
             var key = Convert.FromBase64String(Convert.ToBase64String(Encoding.UTF8.GetBytes("35476utyhjdvcadye6746574retdfghjn"))); ;

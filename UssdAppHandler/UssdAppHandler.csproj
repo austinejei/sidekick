@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0BBC151B-FD70-4BCD-B005-6AE3259A25C2}</ProjectGuid>
+    <ProjectGuid>{061175D2-59F6-444E-8FE8-AE93A3CC2DB3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Api.Common</RootNamespace>
-    <AssemblyName>Api.Common</AssemblyName>
+    <RootNamespace>UssdAppHandler</RootNamespace>
+    <AssemblyName>UssdAppHandler</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\apibin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -30,12 +30,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Smsgh.UssdFramework">
+      <HintPath>..\packages\Smsgh.UssdFramework.1.4.7\lib\Smsgh.UssdFramework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -43,16 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configurations\AuthenticationModulesConfigurationSection.cs" />
-    <Compile Include="Configurations\DelegatingHandlersConfigurationSection.cs" />
-    <Compile Include="Configurations\EventHandlersConfigurationSection.cs" />
-    <Compile Include="Configurations\HttpApiHandlersConfig.cs" />
-    <Compile Include="Configurations\HttpApiHandlersConfigCollection.cs" />
-    <Compile Include="Configurations\HttpApiHandlersConfigurationSection.cs" />
-    <Compile Include="Crypto.cs" />
-    <Compile Include="JsonWebToken.cs" />
-    <Compile Include="JwtHashAlgorithm.cs" />
-    <Compile Include="PinGenerator.cs" />
+    <Compile Include="UssdControllers\MainController.cs" />
+    <Compile Include="MainUssdController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

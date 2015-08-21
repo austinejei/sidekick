@@ -39,12 +39,13 @@ namespace ApiServer
 
 
 
+            app.AttachAuthenticationModules();
 
-            AttachAuthenticationModules(app);
 
             var config = new HttpConfiguration();
 
-            AttachDelegatingHandlers(config);
+            config.AttachDelegatingHandlers();
+            
           
             config.Services.Replace(typeof (IAssembliesResolver), new CustomAssemblyResolver());
 
@@ -80,12 +81,14 @@ namespace ApiServer
 
         private void LoadEventHandlers()
         {
-            Logger.Debug("loading event handler modules...");
-            var config = ConfigurationManager.GetSection("sidekickventHandlers") as EventHandlersConfigurationSection;
+
+            var config = ConfigurationManager.GetSection("sidekickEventHandlers") as EventHandlersConfigurationSection;
 
             if (config != null)
             {
-                Logger.Info("Loaded {0} event handler modules", config.Modules.Count);
+                Logger.Info("Identified {0} event handler modules", config.Modules.Count);
+                EventhandlerModules.Clear();
+                Logger.Debug("loading event handler modules...");
                 foreach (ProviderSettings moduleElement in config.Modules)
                 {
                     if (moduleElement.Type != null)
@@ -97,7 +100,7 @@ namespace ApiServer
                             eventhandlerModule.Initialize(SidekickEventsManager.Instance.Events);
                             
                             EventhandlerModules.Add(eventhandlerModule);
-                            Logger.Debug("{0} is initialized.", moduleElement.Name);
+                            Logger.Debug("{0} is loaded and initialized.", moduleElement.Name);
                         }
 
                     }
@@ -112,77 +115,7 @@ namespace ApiServer
         }
 
 
-        private void AttachAuthenticationModules(IAppBuilder app)
-        {
-            var config = ConfigurationManager.GetSection("authenticationMiddleware") as AuthenticationModulesConfigurationSection;
-
-            if (config != null)
-            {
-                Logger.Info("Loaded {0} authentication modules", config.Modules.Count);
-                foreach (ProviderSettings moduleElement in config.Modules)
-                {
-                    if (moduleElement.Type != null)
-                    {
-                        JwtBearerAuthenticationOptions jwtBearerAuthenticationOptions =null;
-
-                        try
-                        {
-                            jwtBearerAuthenticationOptions =
-                                Activator.CreateInstance(Type.GetType(moduleElement.Type)) as JwtBearerAuthenticationOptions;
-
-                        }
-                        catch (Exception exception)
-                        {
-                            
-                        }
-
-                        if (jwtBearerAuthenticationOptions!=null)
-                        {
-                             app.UseJwtBearerAuthentication(jwtBearerAuthenticationOptions);
-                        }
-                        else
-                        {
-                             app.Use(Type.GetType(moduleElement.Type));
-                        }
-
-                       
-                        Logger.Debug("added {0}", moduleElement.Name);
-                    }
-
-                }
-            }
-            else
-            {
-                throw new Exception("no authentication modules found");
-            }
-        }
-
-        private void AttachDelegatingHandlers(HttpConfiguration httpConfiguration)
-        {
-            var config = ConfigurationManager.GetSection("authenticationMiddleware") as AuthenticationModulesConfigurationSection;
-
-            if (config != null)
-            {
-                Logger.Info("Loaded {0} request throttling handlers", config.DelegatingHandlers.Count);
-                foreach (ProviderSettings element in config.DelegatingHandlers)
-                {
-                    if (element.Type != null)
-                    {
-                        DelegatingHandler delegatingHandler =
-                            Activator.CreateInstance(Type.GetType(element.Type)) as DelegatingHandler;
-
-                        
-                        httpConfiguration.MessageHandlers.Add(delegatingHandler);
-                        Logger.Debug("added {0}", element.Name);
-                    }
-
-                }
-            }
-            else
-            {
-                Logger.Warn("DelegatingHandlers handler not found");
-            }
-        }
+    
 
     }
 

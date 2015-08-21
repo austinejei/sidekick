@@ -2,17 +2,16 @@
 
 namespace Api.Common.Configurations
 {
-    public class AuthenticationModulesConfigurationSection: ConfigurationSection
+    public class DelegatingHandlersConfigurationSection : ConfigurationSection
     {
+       
         [ConfigurationProperty("modules", IsRequired = true)]
-        public ProviderSettingsCollection Modules
+        public ProviderSettingsCollection DelegatingHandlers
         {
             get { return (ProviderSettingsCollection)base["modules"]; }
             set { base["modules"] = value; }
         }
 
-   
-      
 
     }
 }
