@@ -8,7 +8,7 @@ namespace UssdAppHandler.UssdControllers
     {
         public async Task<UssdResponse> Start()
         {
-            var menu = UssdMenu.New("Welcome", Environment.NewLine + "by SMSGH")
+            var menu = UssdMenu.New("Welcome", Environment.NewLine + "by Sidekick")
                 .AddItem("Greet me", "GreetingForm")
                 .AddItem("What's the time?", "Time")
                 .AddZeroItem("Exit", "Exit");
@@ -20,7 +20,7 @@ namespace UssdAppHandler.UssdControllers
         {
             var form = UssdForm.New("Greet Me!", "Greeting")
                 .AddInput(UssdInput.New("Name"))
-                .AddInput(UssdInput.New("Sex")
+                .AddInput(UssdInput.New("Gender")
                     .Option("M", "Male")
                     .Option("F", "Female"));
             return await RenderForm(form);
@@ -43,7 +43,7 @@ namespace UssdAppHandler.UssdControllers
                 greeting = "Good night";
             }
             var name = FormData["Name"];
-            var prefix = FormData["Sex"] == "M" ? "Master" : "Madam";
+            var prefix = FormData["Sex"] == "M" ? "sir" : "lady";
             return Render(string.Format("{0}, {1} {2}!", greeting, prefix, name));
         }
 
