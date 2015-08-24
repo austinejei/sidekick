@@ -101,7 +101,7 @@ namespace DataLayer.Migrations
                     PhoneNumber = "0244123456",
                   
                     PhoneNumberConfirmed = true,
-
+                    IsActive =true,
                 };
 
                 manager.Create(user, "sidekick_user_2015");
@@ -124,7 +124,7 @@ namespace DataLayer.Migrations
                     PhoneNumber = "0277243123",
 
                     PhoneNumberConfirmed = true,
-
+                    IsActive = true,
                 };
 
                 manager.Create(user, "sidekick_dev_2015");
