@@ -41,6 +41,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmsShortcodeHandler", "SmsS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UssdAppHandler", "UssdAppHandler\UssdAppHandler.csproj", "{061175D2-59F6-444E-8FE8-AE93A3CC2DB3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiMediaFormatters", "ApiMediaFormatters\ApiMediaFormatters.csproj", "{5A9F71E6-D0DC-4712-8DB4-6D4F5592C173}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -99,6 +101,10 @@ Global
 		{061175D2-59F6-444E-8FE8-AE93A3CC2DB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{061175D2-59F6-444E-8FE8-AE93A3CC2DB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{061175D2-59F6-444E-8FE8-AE93A3CC2DB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A9F71E6-D0DC-4712-8DB4-6D4F5592C173}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A9F71E6-D0DC-4712-8DB4-6D4F5592C173}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A9F71E6-D0DC-4712-8DB4-6D4F5592C173}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A9F71E6-D0DC-4712-8DB4-6D4F5592C173}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -116,5 +122,6 @@ Global
 		{5D5CBAE9-6D3D-4813-97DD-83D63AE266BB} = {62CED753-025B-418B-B9EE-EB1488276B28}
 		{C4AEDBB4-8623-436F-8FE6-97DF79CF6520} = {D474AFCF-8589-49AD-8440-C54261F35365}
 		{061175D2-59F6-444E-8FE8-AE93A3CC2DB3} = {D474AFCF-8589-49AD-8440-C54261F35365}
+		{5A9F71E6-D0DC-4712-8DB4-6D4F5592C173} = {D474AFCF-8589-49AD-8440-C54261F35365}
 	EndGlobalSection
 EndGlobal

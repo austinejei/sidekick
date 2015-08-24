@@ -1,6 +1,7 @@
 using System;
 using System.Configuration;
 using System.Net.Http;
+using System.Net.Http.Formatting;
 using System.Web.Http;
 using Api.Common.Configurations;
 using Microsoft.Owin.Security.Jwt;
@@ -83,6 +84,23 @@ namespace ApiServer
             {
                 Logger.Warn("DelegatingHandlers handler not found");
             }
+        }
+
+        public static void AttachMediaFormatters(this HttpConfiguration configuration)
+        {
+            var config = ConfigurationManager.GetSection("mediaTypeFormatters") as MediaFormatterConfigurationSection;
+            if (config != null)
+            {
+                Logger.Info("Loading {0} Media Type Formatters...", config.Formatters.Count);
+                foreach (ProviderSettings formatter in config.Formatters)
+                {
+                    if (formatter.Type == null) continue;
+                    MediaTypeFormatter mediaTypeFormatter = Activator.CreateInstance(Type.GetType(formatter.Type)) as MediaTypeFormatter;
+                    configuration.Formatters.Add(mediaTypeFormatter);
+                    Logger.Info("Module {0} added", formatter.Name);
+                }
+            }
+            else Logger.Warn("No MediaFormatters found");
         }
     }
 }

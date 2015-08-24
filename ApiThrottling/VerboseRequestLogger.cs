@@ -31,7 +31,7 @@ namespace ApiThrottling
                                                                                }
                                                                                catch (Exception exception)
                                                                                {
-                                                                                   Logger.Warn(exception.Message);
+                                                                                 //  Logger.Warn(exception.Message);
                                                                                }
                                                                                Logger.Debug("Response => Headers: {0} \r\n Body: {1}",response.Headers,rawResponse);
                                                                                return response;

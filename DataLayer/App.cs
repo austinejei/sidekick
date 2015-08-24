@@ -14,6 +14,8 @@ namespace DataLayer
         public string ClientSecret { get; set; }
         public bool IsActive { get; set; }
 
+        public string AppUrl { get; set; } //main point of entry for app
+
         public string RedirectUrl { get; set; }
 
         public string Meta { get; set; } //to contain stuff like ratelimit in json payload

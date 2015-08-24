@@ -64,6 +64,7 @@ namespace DataLayer.Migrations
                                                               IsActive=true,
                                                               IsTrusted = true,
                                                               AccessTokenExpiry = TimeSpan.FromHours(2),
+                                                              AppUrl ="https://www.getpostman.com/oauth2/callback",
                                                               SsoEncryptionKey = "3546yrethgsdfsadgweqytrjghk-=erwsdgbfg12wedsfg890",
                                                               Meta = "{\"rateLimit\":2000,\"allowSso\":true}", //API rate limit,
                                                               

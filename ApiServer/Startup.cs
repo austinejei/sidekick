@@ -45,7 +45,7 @@ namespace ApiServer
             var config = new HttpConfiguration();
 
             config.AttachDelegatingHandlers();
-            
+            config.AttachMediaFormatters();
           
             config.Services.Replace(typeof (IAssembliesResolver), new CustomAssemblyResolver());
 
