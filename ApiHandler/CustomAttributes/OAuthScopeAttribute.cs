@@ -73,7 +73,7 @@ namespace ApiHandler.CustomAttributes
                             StatusCode =
                                 HttpStatusCode
                                 .BadRequest,
-                            ReasonPhrase = "Your scope definition list does not include this resource",
+                            ReasonPhrase = "Your scope definition list does not include access to this resource",
                             Content = unauthorizedUserContent
                         };
                     }
