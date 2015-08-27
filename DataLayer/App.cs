@@ -27,6 +27,8 @@ namespace DataLayer
         public string Name { get; set; }
         public string Description { get; set; }
 
+        public bool IsOAuth { get; set; } //helps to determine whether to allow oauth
+
         public DateTime DateCreated { get; set; }
 
         public bool IsTrusted { get; set; } //if trusted, we give a refresh token

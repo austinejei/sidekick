@@ -135,7 +135,10 @@ namespace AuthServer
                 {
                     context.Rejected();
                 }
-
+                else if (!app.IsOAuth)
+                {
+                    context.Rejected();
+                }
                 else if (!app.IsActive)
                 {
                     context.Rejected();

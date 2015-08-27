@@ -45,7 +45,11 @@ namespace AuthServer.Controllers
                 return
                     RedirectPermanent(redirectUrl + "?error=client_not_found&state=" + Request.QueryString.Get("state"));
             }
-
+            if (!app.IsOAuth)
+            {
+                return
+                        RedirectPermanent(redirectUrl + "?error=client_not_configured_for_oauth&state=" + Request.QueryString.Get("state"));
+            }
             if (!app.IsActive)
             {
                 return
