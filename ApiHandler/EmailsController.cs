@@ -32,7 +32,7 @@ namespace ApiHandler
 
             var appName = userIdentity.Claims.FirstOrDefault(c => c.Type == "sidekick.client.appName").Value;
 
-            await Task.Delay(4000);
+            await Task.Delay(4000); //intentional delay
             Logger.Debug("email sent");
             Logger.Debug("raising events after sending email");
             await SidekickEventsManager.Instance.Events.OnEmailSent(new EmailSentEventArgs

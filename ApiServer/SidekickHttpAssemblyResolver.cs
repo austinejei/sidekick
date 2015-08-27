@@ -10,7 +10,7 @@ using NLog;
 
 namespace ApiServer
 {
-    public class CustomAssemblyResolver : DefaultAssembliesResolver
+    public class SidekickHttpAssemblyResolver : DefaultAssembliesResolver
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 

@@ -5,8 +5,8 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ApiServer")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Sidekick Api Server")]
+[assembly: AssemblyDescription("Sidekick Api Server")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("ApiServer")]

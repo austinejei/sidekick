@@ -22,20 +22,29 @@ namespace ApiServer
 
         public void Configuration(IAppBuilder app)
         {
-            OwinHttpListener listener =
-                (OwinHttpListener) app.Properties["Microsoft.Owin.Host.HttpListener.OwinHttpListener"];
+            if (app.Properties.ContainsKey("Microsoft.Owin.Host.HttpListener.OwinHttpListener"))
+            {
+                Logger.Info("configuring server environment");
 
-            int maxAccepts, maxRequests;
-            listener.GetRequestProcessingLimits(out maxAccepts, out maxRequests);
+                OwinHttpListener listener =
+                (OwinHttpListener)app.Properties["Microsoft.Owin.Host.HttpListener.OwinHttpListener"];
 
-
-            listener.SetRequestQueueLimit(int.Parse(ConfigurationManager.AppSettings["Owin.RequestQueueLimit"]));
-
-            listener.SetRequestProcessingLimits(int.Parse(ConfigurationManager.AppSettings["Owin.MaxAccepts"]),
-                int.Parse(ConfigurationManager.AppSettings["Owin.MaxRequests"]));
+                int maxAccepts, maxRequests;
+                listener.GetRequestProcessingLimits(out maxAccepts, out maxRequests);
 
 
-            app.Properties["Microsoft.Owin.Host.HttpListener.OwinHttpListener"] = listener;
+                listener.SetRequestQueueLimit(int.Parse(ConfigurationManager.AppSettings["Owin.RequestQueueLimit"]));
+
+                listener.SetRequestProcessingLimits(int.Parse(ConfigurationManager.AppSettings["Owin.MaxAccepts"]),
+                    int.Parse(ConfigurationManager.AppSettings["Owin.MaxRequests"]));
+
+
+                app.Properties["Microsoft.Owin.Host.HttpListener.OwinHttpListener"] = listener;
+            }
+            else
+            {
+                Logger.Warn("key {0} not found. Will revert to default values.", "Microsoft.Owin.Host.HttpListener.OwinHttpListener");
+            }
 
 
 
@@ -47,7 +56,7 @@ namespace ApiServer
             config.AttachDelegatingHandlers();
             config.AttachMediaFormatters();
           
-            config.Services.Replace(typeof (IAssembliesResolver), new CustomAssemblyResolver());
+            config.Services.Replace(typeof (IAssembliesResolver), new SidekickHttpAssemblyResolver());
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",

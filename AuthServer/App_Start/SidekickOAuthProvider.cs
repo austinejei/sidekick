@@ -25,6 +25,7 @@ namespace AuthServer
 
         public override  Task GrantCustomExtension(OAuthGrantCustomExtensionContext context)
         {
+            
             return base.GrantCustomExtension(context);
 
         }
