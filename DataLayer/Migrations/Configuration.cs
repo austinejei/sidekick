@@ -71,7 +71,7 @@ namespace DataLayer.Migrations
                                                           }
                                                       });
 
-            context.AppScopes.AddOrUpdate(s=>s.Id,new []
+            context.AppScopes.AddOrUpdate(s=>s.AppId,new []
                                                   {
                                                       new AppScope
                                                       {

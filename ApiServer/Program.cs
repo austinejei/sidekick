@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Owin.Hosting;
 using NLog;
@@ -11,8 +12,8 @@ namespace ApiServer
     {
         protected static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
-        private static IDisposable _cashBaggApiListener;
-        static readonly string[] exitCommands = { "exit", "shutdown", "end", "quit" };
+        private static IDisposable _apiListener;
+        static readonly string[] ExitCommands = { "exit", "shutdown", "end", "quit","bye" };
 
         static void Main(string[] args)
         {
@@ -21,17 +22,24 @@ namespace ApiServer
                                                               Log.Fatal("UnhandledException: {0}", e.ExceptionObject.ToString());
                                                           };
 
-       
 
-            Console.Title = ConfigurationManager.AppSettings["AppName"];
+            var title = ConfigurationManager.AppSettings["AppName"];
+            Console.Title = title;
             Console.WriteLine("{0}", ConfigurationManager.AppSettings["AppName"]);
-            Console.WriteLine("-------------------------");
+
+            StringBuilder liner = new StringBuilder();
+            title.ToCharArray().ToList().ForEach((s) =>
+                                                 {
+                                                     liner.Append("-");
+                                                 });
+
+            Console.WriteLine(liner);
 
 
            Task.Factory.StartNew(StartHttpServer);
 
             var userExitCode = Console.ReadLine();
-           while (!exitCommands.Contains(userExitCode))
+           while (!ExitCommands.Contains(userExitCode))
            {
                Console.WriteLine("command not recognised!");
                userExitCode = Console.ReadLine();
@@ -47,7 +55,7 @@ namespace ApiServer
               var serverUrl = ConfigurationManager.AppSettings["Core.ApiEndpoint"];
             try
             {
-                _cashBaggApiListener = WebApp.Start<Startup>(serverUrl);
+                _apiListener = WebApp.Start<Startup>(serverUrl);
 
                 Log.Info("HTTP Listener started at {0}", serverUrl);
                 Log.Debug("Waiting for requests...");
@@ -64,7 +72,7 @@ namespace ApiServer
         {
             try
             {
-                if (_cashBaggApiListener==null)
+                if (_apiListener==null)
                 {
                     Log.Warn("cannot shutdown a service that does not exist");
                     return;
@@ -72,7 +80,7 @@ namespace ApiServer
                 }
 
                 //Startup.EventhandlerModules.ForEach(e => e.Release(SidekickEventsManager.Instance.Events));
-                _cashBaggApiListener.Dispose();
+                _apiListener.Dispose();
                 Log.Info("HTTP listener has been successfully shut down :|");
             }
             catch (Exception exception)

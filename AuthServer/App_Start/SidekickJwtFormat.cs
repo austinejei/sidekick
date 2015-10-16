@@ -36,7 +36,7 @@ namespace AuthServer
                 throw new ArgumentNullException("data");
             }
 
-          //todo get individual expiry for each token like this
+      
             var tokenExpiry = TimeSpan.Parse(data.Identity.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Expiration).Value);
 
             var issuer = "http://oauth.sidekick.com";

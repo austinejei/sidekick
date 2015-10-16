@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -119,7 +120,7 @@ namespace AuthServer.Controllers
                         AppId = app.Id,
                         DateInstalled = DateTime.Now,
                         Username = User.Identity.Name,
-
+                        IsInstalled=true
                     });
 
                     //copy the scopes into the user's account
@@ -131,7 +132,8 @@ namespace AuthServer.Controllers
                             AppId = app.Id,
                             Enabled = true,
                             OAuthScopeId = appScope.OAuthScopeId,
-                            Username = User.Identity.Name
+                            Username = User.Identity.Name,
+                            
                         });
                     }
 
@@ -145,9 +147,16 @@ namespace AuthServer.Controllers
                         userExistingApp.DateUninstalled = null;
                         //the reason we're doing this is because, when the user uninstalls the app, we need to remove all the userappscope relations,
                         //then during installation, we get them back
+
+                        var existingUserAppScopes =
+                            _dbContext.UserAppScopes.Where(s => s.AppId == app.Id && s.Username == User.Identity.Name);
+
+
+                     
+                        var newUserAppScopes = new List<UserAppScope>();
                         foreach (var appScope in app.AppScopes)
                         {
-                            _dbContext.UserAppScopes.Add(new UserAppScope
+                            newUserAppScopes.Add(new UserAppScope
                             {
                                 AppId = app.Id,
                                 Enabled = true,
@@ -155,6 +164,18 @@ namespace AuthServer.Controllers
                                 Username = User.Identity.Name
                             });
                         }
+
+
+
+                        var intersectingUserAppScopes = newUserAppScopes.Where(d => !existingUserAppScopes.Any(p => p.OAuthScopeId == d.OAuthScopeId));
+
+                        var userAppScopes
+                            = intersectingUserAppScopes as IList<UserAppScope> ?? intersectingUserAppScopes.ToList();
+                        if (userAppScopes.Any())
+                        {
+                            _dbContext.UserAppScopes.AddRange(userAppScopes);
+                        }
+                     
 
                         _dbContext.Entry(userExistingApp).State = EntityState.Modified;
                         await _dbContext.SaveChangesAsync();
