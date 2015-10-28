@@ -2,6 +2,7 @@
 using AuthServer.SsoInfrastructure.Factories;
 using AuthServer.SsoInfrastructure.Managers;
 using AuthServer.SsoInfrastructure.Services;
+using SimpleInjector;
 
 namespace AuthServer.SsoInfrastructure.SetUp
 {

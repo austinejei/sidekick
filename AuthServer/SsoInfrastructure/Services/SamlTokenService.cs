@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.IdentityModel.Protocols.WSTrust;
 using System.IdentityModel.Services;
+using System.Linq;
 using System.Security;
 using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
 using AuthServer.SsoInfrastructure.Factories;
 using AuthServer.SsoInfrastructure.Managers;
+using DataLayer;
+using Newtonsoft.Json.Linq;
 
 namespace AuthServer.SsoInfrastructure.Services
 {
@@ -14,6 +17,8 @@ namespace AuthServer.SsoInfrastructure.Services
     {
         private readonly IRealmTracker realmTracker;
         private readonly ISecurityTokenServiceConfigurationFactory configurationFactory;
+
+        private static readonly ApplicationDbContext _context = new ApplicationDbContext();
 
         public SamlTokenService(
             IRealmTracker realmTracker, 
@@ -67,7 +72,32 @@ namespace AuthServer.SsoInfrastructure.Services
 
         private static IEnumerable<string> GetAuthorisedAudiencesWeCanIssueTokensTo()
         {
-            return new List<string> { InfrastructureConstants.Rp1Url, InfrastructureConstants.Rp2Url };
+            var allowedAudience = _context.Apps.Where(CheckForSsoApps).DefaultIfEmpty(new App()).Select(a => a.AppUrl);
+
+            return allowedAudience;
+            //return new List<string> { InfrastructureConstants.Rp1Url, InfrastructureConstants.Rp2Url };
+        }
+
+        private static bool CheckForSsoApps(App app)
+        {
+            if (!app.IsTrusted)
+            {
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(app.Meta))
+            {
+                return false;
+            }
+
+            var ssoConfig = JObject.Parse(app.Meta)["allowSso"];
+
+            if (ssoConfig==null)
+            {
+                return false;
+            }
+
+            return bool.Parse(ssoConfig.ToString());
         }
 
         private static X509Certificate2 GetSamlTokenSigningCertificate()
