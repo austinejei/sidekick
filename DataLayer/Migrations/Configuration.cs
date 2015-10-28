@@ -59,7 +59,7 @@ namespace DataLayer.Migrations
                                                               ClientId = "354yeghdsfc",
                                                               ClientSecret = "ytfghnfg454",
                                                               DateCreated = DateTime.Now,
-                                                              RedirectUrl = "http://localhost/SidekickTest/oauth2/callback",
+                                                              RedirectUrl = "https://developers.google.com/oauthplayground",
                                                               Username = "kwaku.dev@sidekick.com",
                                                               IsActive=true,
                                                               IsTrusted = true,
@@ -75,12 +75,14 @@ namespace DataLayer.Migrations
                                                   {
                                                       new AppScope
                                                       {
+                                                          Id = 1,
                                                           AppId = 1,
                                                           OAuthScopeId=1,
                                                           
                                                       },
                                                        new AppScope
                                                       {
+                                                          Id = 2,
                                                           AppId = 1,
                                                           OAuthScopeId=2
                                                       }
