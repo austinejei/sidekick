@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
@@ -6,6 +8,7 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Owin;
 using AuthServer.Models;
+using AuthServer.OAuthInfrastructure;
 using DataLayer;
 
 namespace AuthServer
@@ -67,6 +70,16 @@ namespace AuthServer
             //});
 
             app.UseOAuthAuthorizationServer(new SideKickOAuthImplementation()); //this kick starts our OAuth server :)
+        }
+
+        private void ConfigureSso(IAppBuilder app)
+        {
+            var container = new Container();
+            container.RegisterComponents();
+            container.Verify();
+
+            DependencyResolver.SetResolver(new SimpleInjectorDependencyResolver(container));
+
         }
     }
 }

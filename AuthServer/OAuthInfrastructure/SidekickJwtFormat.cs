@@ -1,5 +1,4 @@
 using System;
-
 using System.IdentityModel.Tokens;
 using System.Linq;
 using System.Security.Claims;
@@ -7,7 +6,7 @@ using System.Text;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.OAuth;
 
-namespace AuthServer
+namespace AuthServer.OAuthInfrastructure
 {
     public class SidekickJwtFormat : ISecureDataFormat<AuthenticationTicket>
     {

@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Concurrent;
-
 using System.Linq;
-using System.Security.Claims;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Infrastructure;
 using Microsoft.Owin.Security.OAuth;
 
-namespace AuthServer
+namespace AuthServer.OAuthInfrastructure
 {
     public class SideKickOAuthImplementation : OAuthAuthorizationServerOptions
     {

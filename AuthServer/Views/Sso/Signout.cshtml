@@ -1,0 +1,28 @@
+﻿@using AuthServer.Models
+@model AuthServer.SsoInfrastructure.ViewModels.SignOutViewModel
+@{
+    ViewBag.Title = "Log in";
+}
+
+<h2>@ViewBag.Title.</h2>
+<div class="row">
+    <div class="col-md-12">
+        <section id="loginForm">
+
+            <p>
+                You've been logged out of Sidekick.
+            </p>
+            <p>
+            <p>
+                <a href='@Model.ReturnUrl'>Log back in to the last site you visited...</a>
+            </p>
+    
+            
+        </section>
+    </div>
+ 
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -7,7 +7,7 @@ using DataLayer;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security.OAuth;
 
-namespace AuthServer
+namespace AuthServer.OAuthInfrastructure
 {
     public class SidekickOAuthProvider : OAuthAuthorizationServerProvider
     {
@@ -70,9 +70,7 @@ namespace AuthServer
                                          new Claim("sidekick.client.name", clientName),
                                          new Claim("sidekick.client.meta", clientMeta),
                                          new Claim("sidekick.client.appId", appId.ToString()),
-                                         new Claim("sidekick.client.appName", appName),
-                            
-
+                                         new Claim("sidekick.client.appName", appName)
                                      };
 
                       
