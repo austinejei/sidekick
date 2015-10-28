@@ -59,19 +59,19 @@ namespace DataLayer.Migrations
                                                               ClientId = "354yeghdsfc",
                                                               ClientSecret = "ytfghnfg454",
                                                               DateCreated = DateTime.Now,
-                                                              RedirectUrl = "https://www.getpostman.com/oauth2/callback",
+                                                              RedirectUrl = "http://localhost/SidekickTest/oauth2/callback",
                                                               Username = "kwaku.dev@sidekick.com",
                                                               IsActive=true,
                                                               IsTrusted = true,
                                                               AccessTokenExpiry = TimeSpan.FromHours(2),
-                                                              AppUrl ="https://www.getpostman.com/oauth2/callback",
-                                                              SsoEncryptionKey = "3546yrethgsdfsadgweqytrjghk-=erwsdgbfg12wedsfg890",
+                                                              AppUrl ="http://localhost/SidekickTest/",
+                                                              SsoEncryptionKey = "8c64cb079328ec72d294cad7d4482d79b8431239",
                                                               Meta = "{\"rateLimit\":2000,\"allowSso\":true}", //API rate limit,
                                                               IsOAuth = true
                                                           }
                                                       });
 
-            context.AppScopes.AddOrUpdate(s=>s.AppId,new []
+            context.AppScopes.AddOrUpdate(s=>s.Id,new []
                                                   {
                                                       new AppScope
                                                       {

@@ -159,7 +159,11 @@ namespace AuthServer.Controllers
 
         private static void SignOutTheSts()
         {
-            FederatedAuthentication.SessionAuthenticationModule.SignOut();
+            
+                FederatedAuthentication.SessionAuthenticationModule.SignOut();
+            
+           
+            
         }
 
         private static void RemoveTheRpThatSignedOutFromRealmsToSignOut(
