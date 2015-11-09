@@ -45,6 +45,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiMediaFormatters", "ApiMe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RelyingParty1", "RelyingParty1\RelyingParty1.csproj", "{6B1A3C84-C454-4CC0-9F76-4D47AD60E9C6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication1", "WebApplication1\WebApplication1.csproj", "{05D7FC28-9DC0-4991-807B-8219405EC324}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -111,6 +113,10 @@ Global
 		{6B1A3C84-C454-4CC0-9F76-4D47AD60E9C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B1A3C84-C454-4CC0-9F76-4D47AD60E9C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6B1A3C84-C454-4CC0-9F76-4D47AD60E9C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05D7FC28-9DC0-4991-807B-8219405EC324}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05D7FC28-9DC0-4991-807B-8219405EC324}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05D7FC28-9DC0-4991-807B-8219405EC324}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05D7FC28-9DC0-4991-807B-8219405EC324}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -130,5 +136,6 @@ Global
 		{061175D2-59F6-444E-8FE8-AE93A3CC2DB3} = {D474AFCF-8589-49AD-8440-C54261F35365}
 		{5A9F71E6-D0DC-4712-8DB4-6D4F5592C173} = {D474AFCF-8589-49AD-8440-C54261F35365}
 		{6B1A3C84-C454-4CC0-9F76-4D47AD60E9C6} = {B97803EF-085D-4D69-BB90-89FAED650B7E}
+		{05D7FC28-9DC0-4991-807B-8219405EC324} = {B97803EF-085D-4D69-BB90-89FAED650B7E}
 	EndGlobalSection
 EndGlobal

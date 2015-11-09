@@ -40,7 +40,7 @@ namespace AuthServer.Controllers
             var scopeList = scopes.Split(' ');
             var clientId = Request.QueryString.Get("client_id") ?? "";
 
-            var redirectUrl = Request.QueryString.Get("redirect_url") ?? "";
+            var redirectUrl = Request.QueryString.Get("redirect_uri") ?? "";
 
 
             var app = await _dbContext.Apps.FirstOrDefaultAsync(a => a.ClientId == clientId);

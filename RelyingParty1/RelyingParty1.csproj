@@ -65,7 +65,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.IdentityModel" />
-    <Reference Include="System.identitymodel.services" />
+    <Reference Include="System.IdentityModel.Services" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -135,6 +135,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="ClaimsTransformation\ClaimsAppender.cs" />
+    <Compile Include="Controllers\OAuthClientController.cs" />
     <Compile Include="Services\ClaimsAppender.cs" />
     <Compile Include="Controllers\SignOutController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -166,7 +167,9 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
