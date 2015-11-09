@@ -65,7 +65,7 @@ namespace DataLayer.Migrations
                                                               IsActive=true,
                                                               IsTrusted = true,
                                                               AccessTokenExpiry = TimeSpan.FromHours(2),
-                                                              AppUrl ="http://localhost/SidekickTest/",
+                                                              AppUrl ="http://localhost/ssoclient/",
                                                               SsoEncryptionKey = "8c64cb079328ec72d294cad7d4482d79b8431239",
                                                               Meta = "{\"rateLimit\":2000,\"allowSso\":true}", //API rate limit,
                                                               IsOAuth = true
