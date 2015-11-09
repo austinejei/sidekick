@@ -22,7 +22,12 @@ namespace ApiAuthentication
                                            {
                                                new SymmetricKeyIssuerSecurityTokenProvider(issuer, key)
                                            };
+
+            
         }
+
+
+        
 
        
     }

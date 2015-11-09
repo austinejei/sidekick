@@ -29,11 +29,11 @@ namespace ApiHandler
 
             return Ok(new
                       {
-                          Id = user.Claims.FirstOrDefault(s=>s.Type==ClaimTypes.Sid).Value,
+                         userFromDb.Id,
                           Username = user.Name,
-                          Fullname = user.Claims.FirstOrDefault(s => s.Type == ClaimTypes.GivenName).Value,
-                          Email=user.Claims.FirstOrDefault(s => s.Type == ClaimTypes.Email).Value,
-                          PhoneNumber = user.Claims.FirstOrDefault(s => s.Type == ClaimTypes.MobilePhone).Value,
+                          Fullname = userFromDb.Fullname,
+                          Email=userFromDb.Email,
+                          PhoneNumber = userFromDb.PhoneNumber,
                           userFromDb.IsActive,
                       });
         }

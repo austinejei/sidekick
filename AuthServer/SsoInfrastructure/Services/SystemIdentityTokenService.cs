@@ -9,7 +9,7 @@ namespace AuthServer.SsoInfrastructure.Services
     {
         private readonly SecurityTokenServiceConfiguration securityTokenServiceConfiguration;
         const string SamlTwoTokenType = "urn:oasis:names:tc:SAML:2.0:assertion";
-
+        
         public SystemIdentityTokenService(SecurityTokenServiceConfiguration securityTokenServiceConfiguration) :
             base(securityTokenServiceConfiguration)
         {
