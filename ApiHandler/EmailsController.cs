@@ -5,12 +5,12 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Api.Events;
-using ApiHandler.CustomAttributes;
-using ApiHandler.Models;
+using ApiHandlers.CustomAttributes;
+using ApiHandlers.Models;
 using DataLayer;
 using NLog;
 
-namespace ApiHandler
+namespace ApiHandlers
 {
     [Authorize, RoutePrefix("v1/emails")]
     public class EmailsController : ApiController

@@ -9,7 +9,7 @@ using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 using Newtonsoft.Json;
 
-namespace ApiHandler.CustomAttributes
+namespace ApiHandlers.CustomAttributes
 {
     [AttributeUsage(AttributeTargets.Method)]
     public class OAuthScopeAttribute : ActionFilterAttribute

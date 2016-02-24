@@ -7,7 +7,7 @@ using Newtonsoft.Json.Linq;
 using WebApiContrib.Caching;
 using WebApiContrib.MessageHandlers;
 
-namespace ApiThrottling
+namespace ApiDelegatingHandlers
 {
     public class UserAwareThrottlingHandler:ThrottlingHandler
     {

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthServer", "AuthServer\AuthServer.csproj", "{5FA4D0C3-C739-4AF3-97AA-8893A107257D}"
 EndProject
@@ -25,11 +25,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api.Common", "Api.Common\Ap
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api.Events", "Api.Events\Api.Events.csproj", "{8487A135-9EEF-4170-AC68-708D74F154EB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiEventHandler", "ApiEventHandler\ApiEventHandler.csproj", "{BDF6770A-BEA2-4BCF-8DE9-40FAFF22F63D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiEventHandlers", "ApiEventHandler\ApiEventHandlers.csproj", "{BDF6770A-BEA2-4BCF-8DE9-40FAFF22F63D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiThrottling", "ApiThrottling\ApiThrottling.csproj", "{5A2CC4B9-32CB-45DB-90B4-B5C9693E21C8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiDelegatingHandlers", "ApiThrottling\ApiDelegatingHandlers.csproj", "{5A2CC4B9-32CB-45DB-90B4-B5C9693E21C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiHandler", "ApiHandler\ApiHandler.csproj", "{3BFFEFB9-5E98-477B-B14E-7B4ADACD5AAB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiHandlers", "ApiHandler\ApiHandlers.csproj", "{3BFFEFB9-5E98-477B-B14E-7B4ADACD5AAB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ClientLibrary", "ClientLibrary", "{62CED753-025B-418B-B9EE-EB1488276B28}"
 EndProject

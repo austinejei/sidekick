@@ -2,7 +2,7 @@
 using Api.Events;
 using NLog;
 
-namespace ApiEventHandler
+namespace ApiEventHandlers
 {
     public class AfterEmailSentEventhandler : IEventhandlerModule
     {

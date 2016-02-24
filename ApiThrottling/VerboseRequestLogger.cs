@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using NLog;
 
-namespace ApiThrottling
+namespace ApiDelegatingHandlers
 {
     public class VerboseRequestLogger:DelegatingHandler
     {

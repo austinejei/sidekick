@@ -5,11 +5,11 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Http;
-using ApiHandler.CustomAttributes;
+using ApiHandlers.CustomAttributes;
 using DataLayer;
 using NLog;
 
-namespace ApiHandler
+namespace ApiHandlers
 {
     [Authorize, RoutePrefix("v1/me")]
     public class MeController : ApiController

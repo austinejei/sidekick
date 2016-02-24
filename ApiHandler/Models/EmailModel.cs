@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace ApiHandler.Models
+namespace ApiHandlers.Models
 {
     public class EmailModel
     {

@@ -46,7 +46,7 @@ namespace ApiServer
            }
 
             
-           Log.Info("Shutting down http listener :( ...");
+           Log.Info("Shutting down http listener :(");
             ShutdownHttpServer();
         }
 

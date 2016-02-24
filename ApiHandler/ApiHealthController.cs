@@ -3,7 +3,7 @@ using System.Configuration;
 using System.Threading.Tasks;
 using System.Web.Http;
 
-namespace ApiHandler
+namespace ApiHandlers
 {
     /// <summary>
     /// Exposes the health of the API server
