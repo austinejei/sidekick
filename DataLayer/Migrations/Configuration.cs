@@ -66,7 +66,7 @@ namespace DataLayer.Migrations
                                                               IsTrusted = true,
                                                               AccessTokenExpiry = TimeSpan.FromHours(2),
                                                               AppUrl ="http://localhost/ssoclient/",
-                                                              SsoEncryptionKey = "8c64cb079328ec72d294cad7d4482d79b8431239",
+                                                              SsoEncryptionKey = "b4f5aa91cc5110ae69eda952a4ab5a024c1dd764",
                                                               Meta = "{\"rateLimit\":2000,\"allowSso\":true}", //API rate limit,
                                                               IsOAuth = true
                                                           }

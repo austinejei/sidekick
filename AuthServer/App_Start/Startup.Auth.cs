@@ -37,8 +37,8 @@ namespace AuthServer
                     OnValidateIdentity =
                         SecurityStampValidator.OnValidateIdentity<ApplicationUserManager, ApplicationUser>(
                             TimeSpan.FromMinutes(30), (manager, user) => user.GenerateUserIdentityAsync(manager))
-                },
-                CookieName = "Sidekick"
+                }
+  
             });
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 

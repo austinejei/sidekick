@@ -28,21 +28,21 @@ namespace SsoClient
             //from appsettings...
             const string domain = "";
             const bool requireSsl = false;
-            const string certThumbprint = "8c64cb079328ec72d294cad7d4482d79b8431239";
+            const string certThumbprint = "‎‎b4f5aa91cc5110ae69eda952a4ab5a024c1dd764";
             const string authCookieName = "RP1Auth";
 
-            e.FederationConfiguration = new FederationConfiguration(true);
-
             
-            //e.FederationConfiguration = FederationConfigurationFactory.Create(
-            //    //InfrastructureConstants.Rp1Url,
-            //    "http://localhost/SsoClient/", // the '/' is very necessary at the end. DON'T remove it
-            //    //InfrastructureConstants.StsUrl + "token/get",
-            //    "http://sidekick.local/sso/token",
-            //    domain,
-            //    certThumbprint,
-            //    authCookieName,
-            //    requireSsl);
+
+
+            e.FederationConfiguration = FederationConfigurationFactory.Create(
+                //InfrastructureConstants.Rp1Url,
+                "http://localhost/SsoClient/", // the '/' is very necessary at the end. DON'T remove it
+                                               //InfrastructureConstants.StsUrl + "token/get",
+                "http://sidekick.local/sso/token",
+                domain,
+                certThumbprint,
+                authCookieName,
+                requireSsl);
 
             e.FederationConfiguration.IdentityConfiguration.ClaimsAuthenticationManager = new ClaimsAppender();
 
