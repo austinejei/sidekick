@@ -20,7 +20,6 @@ namespace ApiHandlers.CustomAttributes
         public OAuthScopeAttribute(string scopes) //todo: mark as not null
         {
             Scopes = scopes;
-
         }
 
         public override Task OnActionExecutingAsync(HttpActionContext actionContext, CancellationToken cancellationToken)

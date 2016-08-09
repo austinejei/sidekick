@@ -9,7 +9,6 @@ using System.Text;
 using System.Threading.Tasks;
 using DataLayer;
 using Microsoft.Owin;
-using Newtonsoft.Json.Linq;
 using NLog;
 
 namespace ApiAuthentication
