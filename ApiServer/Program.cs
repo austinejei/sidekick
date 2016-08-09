@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using System.Linq;
+using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Owin.Hosting;
@@ -15,39 +16,57 @@ namespace ApiServer
         private static IDisposable _apiListener;
         static readonly string[] ExitCommands = { "exit", "shutdown", "end", "quit","bye" };
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             AppDomain.CurrentDomain.UnhandledException += (o, e) =>
-                                                          {
-                                                              Log.Fatal("UnhandledException: {0}", e.ExceptionObject.ToString());
-                                                          };
+            {
+                Log.Fatal("UnhandledException: {0}", e.ExceptionObject.ToString());
+            };
 
 
             var title = ConfigurationManager.AppSettings["AppName"];
-            Console.Title = title;
-            Console.WriteLine("{0}", ConfigurationManager.AppSettings["AppName"]);
 
-            StringBuilder liner = new StringBuilder();
-            title.ToCharArray().ToList().ForEach((s) =>
-                                                 {
-                                                     liner.Append("-");
-                                                 });
+            string consoleArg =
+               args.Count(x => x.Equals("-console", StringComparison.OrdinalIgnoreCase)) == 0
+                   ? ""
+                   : args.Single(x => x.Equals("-console", StringComparison.OrdinalIgnoreCase));
 
-            Console.WriteLine(liner);
+            if (string.IsNullOrEmpty(consoleArg))
+            {
+                var servicesToRun = new ServiceBase[] {
+                                                          new SidekickWindowsService(), 
+                                                      };
+                ServiceBase.Run(servicesToRun);
+            }
+            else
+            {
+                Console.Title = title;
+                Console.WriteLine("{0}", ConfigurationManager.AppSettings["AppName"]);
+
+                StringBuilder liner = new StringBuilder();
+                title.ToCharArray().ToList().ForEach((s) =>
+                {
+                    liner.Append("-");
+                });
+
+                Console.WriteLine(liner);
 
 
-           Task.Factory.StartNew(StartHttpServer);
+                StartHttpServer();
+                // Task.Factory.StartNew(StartHttpServer);
 
-            var userExitCode = Console.ReadLine();
-           while (!ExitCommands.Contains(userExitCode))
-           {
-               Console.WriteLine("command not recognised!");
-               userExitCode = Console.ReadLine();
-           }
+                var userExitCode = Console.ReadLine();
+                while (!ExitCommands.Contains(userExitCode))
+                {
+                    Console.WriteLine("command not recognised!");
+                    userExitCode = Console.ReadLine();
+                }
+
+                Log.Info("Shutting down http listener :(");
+                ShutdownHttpServer();
+            }
 
             
-           Log.Info("Shutting down http listener :(");
-            ShutdownHttpServer();
         }
 
         private static void StartHttpServer()

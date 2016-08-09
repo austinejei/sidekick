@@ -1,0 +1,2 @@
+install as windows service:
+sc create SidekickLocal binPath="D:\SoftwareProjects\sidekick\apibin\ApiServer.exe" DisplayName="Sidekick API Server" start=auto
