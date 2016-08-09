@@ -9,12 +9,12 @@ using WebApiContrib.MessageHandlers;
 
 namespace ApiDelegatingHandlers
 {
-    public class UserAwareThrottlingHandler:ThrottlingHandler
+    public class RateLimitDelegatingHandler:ThrottlingHandler
     {
 
 
        
-        public UserAwareThrottlingHandler() : base(new InMemoryThrottleStore(), c =>
+        public RateLimitDelegatingHandler() : base(new InMemoryThrottleStore(), c =>
                                                                                 {
                                                                                     const int defaultRateLimit = 60;
                                                                                     App thirdParty;

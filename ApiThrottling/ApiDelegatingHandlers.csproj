@@ -86,7 +86,7 @@
     <Compile Include="App_Packages\TaskHelpers.Sources.0.3\TaskHelpers.cs" />
     <Compile Include="App_Packages\TaskHelpers.Sources.0.3\TaskHelpersExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UserAwareThrottlingHandler.cs" />
+    <Compile Include="RateLimitDelegatingHandler.cs" />
     <Compile Include="VerboseRequestLogger.cs" />
   </ItemGroup>
   <ItemGroup>

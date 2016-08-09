@@ -76,6 +76,7 @@
   <ItemGroup>
     <Compile Include="BasicAuthentication.cs" />
     <Compile Include="BearerAuthentication.cs" />
+    <Compile Include="IpAuthenticationMiddleware.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

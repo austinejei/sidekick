@@ -68,7 +68,8 @@ namespace DataLayer.Migrations
                                                               AppUrl ="http://localhost/ssoclient/",
                                                               SsoEncryptionKey = "b4f5aa91cc5110ae69eda952a4ab5a024c1dd764",
                                                               Meta = "{\"rateLimit\":2000,\"allowSso\":true}", //API rate limit,
-                                                              IsOAuth = true
+                                                              IsOAuth = true,
+                                                              
                                                           }
                                                       });
 

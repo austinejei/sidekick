@@ -112,6 +112,10 @@
     <Compile Include="Migrations\201508270929239_App_Added_IsOAuth.Designer.cs">
       <DependentUpon>201508270929239_App_Added_IsOAuth.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201608091531483_App_Added_AllowedIp.cs" />
+    <Compile Include="Migrations\201608091531483_App_Added_AllowedIp.Designer.cs">
+      <DependentUpon>201608091531483_App_Added_AllowedIp.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="OAuthScope.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -140,6 +144,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201508270929239_App_Added_IsOAuth.resx">
       <DependentUpon>201508270929239_App_Added_IsOAuth.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608091531483_App_Added_AllowedIp.resx">
+      <DependentUpon>201608091531483_App_Added_AllowedIp.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
