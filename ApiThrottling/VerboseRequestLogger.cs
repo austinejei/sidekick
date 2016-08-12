@@ -22,6 +22,11 @@ namespace ApiDelegatingHandlers
                                                                                
                                                                                var response = c.Result;
 
+                                                                               //skip swagger logging
+                                                                               if (request.RequestUri.ToString().Contains("swagger"))
+                                                                               {
+                                                                                   return response;
+                                                                               }
                                                                                var rawResponse = string.Empty;
                                                                                try
                                                                                {

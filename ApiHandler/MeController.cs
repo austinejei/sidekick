@@ -11,12 +11,19 @@ using NLog;
 
 namespace ApiHandlers
 {
+    /// <summary>
+    /// Provides info about a user
+    /// </summary>
     [Authorize, RoutePrefix("v1/me")]
     public class MeController : ApiController
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly ApplicationDbContext _dbContext = new ApplicationDbContext();
 
+        /// <summary>
+        /// List details about a user
+        /// </summary>
+        /// <returns></returns>
         [HttpGet, Route, OAuthScope("user.profile")]
         public async Task<IHttpActionResult> ListUserProfile()
         {
@@ -30,10 +37,8 @@ namespace ApiHandlers
             return Ok(new
                       {
                          userFromDb.Id,
-                          Username = user.Name,
-                          Fullname = userFromDb.Fullname,
-                          Email=userFromDb.Email,
-                          PhoneNumber = userFromDb.PhoneNumber,
+                          Username = user.Name, userFromDb.Fullname,
+                          userFromDb.Email, userFromDb.PhoneNumber,
                           userFromDb.IsActive,
                       });
         }

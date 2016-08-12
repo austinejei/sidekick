@@ -13,7 +13,12 @@ namespace ApiHandlers
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
+        /// <summary>
+        /// Gets the state of the API service
+        /// </summary>
+        /// <returns></returns>
         [HttpGet, Route]
+        
         public async Task<IHttpActionResult> CurrentState()
         {
             Logger.Debug("received signal to check for API health");

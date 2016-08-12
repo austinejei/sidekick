@@ -58,6 +58,8 @@ namespace ApiServer
           
             config.Services.Replace(typeof (IAssembliesResolver), new SidekickHttpAssemblyResolver());
 
+            config.AttachSwagger();
+
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",

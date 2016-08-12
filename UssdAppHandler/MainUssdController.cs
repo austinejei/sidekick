@@ -1,11 +1,16 @@
 ﻿using System.Threading.Tasks;
 using System.Web.Http;
+using Api.Common;
 using Smsgh.UssdFramework;
 using Smsgh.UssdFramework.Stores;
 
 namespace UssdAppHandler
 {
-    [RoutePrefix("ussdapp"),AllowAnonymous]
+
+    /// <summary>
+    /// Main controller for USSD service
+    /// </summary>
+    [RoutePrefix("ussdapp"),AllowAnonymous, SwHideInDocs]
     public class MainUssdController:ApiController
     {
         [Route,HttpPost]

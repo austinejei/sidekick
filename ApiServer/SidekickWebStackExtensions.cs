@@ -1,12 +1,17 @@
 using System;
 using System.Configuration;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Web.Http;
+using System.Web.Http.Description;
+using Api.Common;
 using Api.Common.Configurations;
 using Microsoft.Owin.Security.Jwt;
 using NLog;
 using Owin;
+using Swashbuckle.Application;
+using Swashbuckle.Swagger;
 
 namespace ApiServer
 {
@@ -101,6 +106,68 @@ namespace ApiServer
                 }
             }
             else Logger.Warn("No MediaFormatters found");
+        }
+
+        public static void AttachSwagger(this HttpConfiguration config)
+        {
+
+            var thisAssembly = typeof(SidekickWebStackExtensions).Assembly;
+            config
+                .EnableSwagger(c =>
+                {
+                    // c.BasicAuth("basic").Description("LUSSD Basic Authentication");
+                    //  c.OperationFilter<AddAuthorizationHeaderParameterOperationFilter>();
+
+                    c.RootUrl(r => ConfigurationManager.AppSettings["Core.ApiEndpoint"]);
+
+                    c.IncludeXmlComments("UssdAppHandler.XML");
+                    c.IncludeXmlComments("SmsShortcodeHandler.XML");
+                    c.IncludeXmlComments("ApiHandlers.XML");
+              
+
+                    c.DocumentFilter<HideInDocsFilter>();
+                    // c.OperationFilter<LussdSpecialParameterOperationFilter>();
+                    c.IgnoreObsoleteActions();
+                    c.SingleApiVersion("v1", "Sidekick API Documentation")
+                        .Description("Sample description.")
+                        .Contact(cc =>
+                        {
+                            cc.Url("https://github.com/austinejei/sidekick")
+                                .Email("sidekick@sidekick.com")
+                                .Name("Sidekick");
+                        })
+                        ;
+
+
+
+                })
+                .EnableSwaggerUi(s =>
+                {
+                    s.InjectJavaScript(thisAssembly, "ApiServer.CustomContent.sidekick-auth.js");
+                })
+                ;
+
+        }
+
+    }
+
+    public class HideInDocsFilter : IDocumentFilter
+    {
+        public void Apply(SwaggerDocument swaggerDoc, SchemaRegistry schemaRegistry, IApiExplorer apiExplorer)
+        {
+            foreach (var apiDescription in apiExplorer.ApiDescriptions)
+            {
+                if (
+                    !apiDescription.ActionDescriptor.ControllerDescriptor.GetCustomAttributes<SwHideInDocsAttribute>()
+                        .Any() && !apiDescription.ActionDescriptor.GetCustomAttributes<SwHideInDocsAttribute>().Any())
+                {
+                    continue;
+                }
+                var route = "/" + apiDescription.Route.RouteTemplate.TrimEnd('/');
+                swaggerDoc.paths.Remove(route);
+
+
+            }
         }
     }
 }

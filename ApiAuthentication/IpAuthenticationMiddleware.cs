@@ -16,7 +16,7 @@ namespace ApiAuthentication
 
         private readonly OwinMiddleware _nextMiddleware;
         private readonly ApplicationDbContext _dbContext;
-        private List<string> _allowedIPs;
+        private readonly List<string> _allowedIPs;
         public IpAuthenticationMiddleware(OwinMiddleware next) :
             base(next)
         {
@@ -32,7 +32,14 @@ namespace ApiAuthentication
         public override async Task Invoke(IOwinContext context)
         {
 
-          
+            if (context.Request.Uri.ToString().ToLower().Contains("ping")
+                      || context.Request.Uri.ToString().ToLower().Contains("signalr")
+                      || context.Request.Uri.ToString().ToLower().Contains("swagger"))
+            {
+                await _nextMiddleware.Invoke(context);
+                return;
+            }
+
             var clientIp = context.Request.Headers["X-Forwarded-For"];
             var ipAddress = (string)context.Environment["server.RemoteIpAddress"];
             if (!string.IsNullOrEmpty(clientIp))

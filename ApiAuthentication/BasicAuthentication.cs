@@ -21,13 +21,10 @@ namespace ApiAuthentication
 
         private readonly ApplicationDbContext _dbContext;
 
-        private List<string> _allowedIPs;
-
         public BasicAuthentication(OwinMiddleware next) : base(next)
         {
            _dbContext = new ApplicationDbContext();
             _nextMiddleware = next;
-            _allowedIPs = ConfigurationManager.AppSettings["AllowedIPs"].Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
         }
 
 
@@ -135,7 +132,9 @@ namespace ApiAuthentication
             }
             else
             {
-                if (context.Request.Uri.ToString().ToLower().Contains("ping") || context.Request.Uri.ToString().ToLower().Contains("signalr"))
+                if (context.Request.Uri.ToString().ToLower().Contains("ping")
+                    || context.Request.Uri.ToString().ToLower().Contains("signalr")
+                    || context.Request.Uri.ToString().ToLower().Contains("swagger"))
                 {
                     await _nextMiddleware.Invoke(context);
                 }

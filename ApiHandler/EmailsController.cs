@@ -12,12 +12,20 @@ using NLog;
 
 namespace ApiHandlers
 {
+    /// <summary>
+    /// Responsible for all email requests
+    /// </summary>
     [Authorize, RoutePrefix("v1/emails")]
     public class EmailsController : ApiController
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
 
+        /// <summary>
+        /// Lists profile about a user
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost, Route, OAuthScope("emails.send")]
         public async Task<IHttpActionResult> ListUserProfile(EmailModel model)
         {
