@@ -37,6 +37,9 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web.Http">
+      <HintPath>..\apibin\System.Web.Http.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -44,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiHandlerHelper.cs" />
     <Compile Include="Configurations\AuthenticationModulesConfigurationSection.cs" />
     <Compile Include="Configurations\DelegatingHandlersConfigurationSection.cs" />
     <Compile Include="Configurations\EventHandlersConfigurationSection.cs" />

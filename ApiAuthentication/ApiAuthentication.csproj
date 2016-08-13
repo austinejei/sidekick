@@ -80,6 +80,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Api.Common\Api.Common.csproj">
+      <Project>{0BBC151B-FD70-4BCD-B005-6AE3259A25C2}</Project>
+      <Name>Api.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DataLayer\DataLayer.csproj">
       <Project>{1D074CA9-F505-4174-A61B-014117C143B7}</Project>
       <Name>DataLayer</Name>

@@ -25,7 +25,7 @@ namespace SmsShortcodeHandler
                                            {
                                                Content =
                                                    new StringContent(Message,
-                                                   Encoding.Unicode, "text/plain"),
+                                                   Encoding.UTF8, "text/plain"),
         
                                            };
 

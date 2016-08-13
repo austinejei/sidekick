@@ -4,6 +4,7 @@ using System.Linq;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
+using Api.Common;
 using Microsoft.Owin.Hosting;
 using NLog;
 
@@ -76,6 +77,7 @@ namespace ApiServer
             {
                 _apiListener = WebApp.Start<Startup>(serverUrl);
 
+              
                 Log.Info("HTTP Listener started at {0}", serverUrl);
                 Log.Debug("Waiting for requests...");
             }

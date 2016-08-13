@@ -7,6 +7,7 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Api.Common;
 using DataLayer;
 using Microsoft.Owin;
 using NLog;
@@ -132,12 +133,20 @@ namespace ApiAuthentication
             }
             else
             {
-                if (context.Request.Uri.ToString().ToLower().Contains("ping")
-                    || context.Request.Uri.ToString().ToLower().Contains("signalr")
-                    || context.Request.Uri.ToString().ToLower().Contains("swagger"))
+
+                var routesToIgnore = new ApiHandlerHelper().GatherRoutesToIgnore();
+
+                if (routesToIgnore.Any(route => context.Request.Uri.AbsolutePath.ToLower().Equals(route.ToLower(),StringComparison.CurrentCultureIgnoreCase)))
                 {
                     await _nextMiddleware.Invoke(context);
+                    //return;
                 }
+                //if (context.Request.Uri.ToString().ToLower().Contains("ping")
+                //    || context.Request.Uri.ToString().ToLower().Contains("signalr")
+                //    || context.Request.Uri.ToString().ToLower().Contains("swagger"))
+                //{
+                //    await _nextMiddleware.Invoke(context);
+                //}
                 else
                 {
                     Logger.Info("no authentication header detected...request will be failed!");

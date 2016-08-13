@@ -20,8 +20,7 @@ namespace ApiHandlers
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-
-        /// <summary>
+      /// <summary>
         /// Lists profile about a user
         /// </summary>
         /// <param name="model"></param>

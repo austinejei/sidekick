@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Api.Common;
 using DataLayer;
 using Microsoft.Owin;
 using NLog;
@@ -32,9 +33,9 @@ namespace ApiAuthentication
         public override async Task Invoke(IOwinContext context)
         {
 
-            if (context.Request.Uri.ToString().ToLower().Contains("ping")
-                      || context.Request.Uri.ToString().ToLower().Contains("signalr")
-                      || context.Request.Uri.ToString().ToLower().Contains("swagger"))
+            var routesToIgnore = new ApiHandlerHelper().GatherRoutesToIgnore();
+
+            if (routesToIgnore.Any(route => context.Request.Uri.ToString().ToLower().Contains(route.ToLower())))
             {
                 await _nextMiddleware.Invoke(context);
                 return;
