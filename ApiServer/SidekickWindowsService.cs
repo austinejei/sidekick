@@ -26,12 +26,15 @@ namespace ApiServer
         protected override void OnStart(string[] args)
         {
             // TODO: Add code here to start your service.
+            Log.Info("starting from Windows Server");
+            
             StartHttpServer();
         }
 
         protected override void OnStop()
         {
             // TODO: Add code here to perform any tear-down necessary to stop your service.
+            Log.Info("received request to shutdown");
             ShutdownHttpServer();
         }
 
