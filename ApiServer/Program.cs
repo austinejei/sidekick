@@ -15,8 +15,8 @@ namespace ApiServer
         protected static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         private static IDisposable _apiListener;
-        static readonly string[] ExitCommands = { "exit", "shutdown", "end", "quit","bye" };
-
+        static readonly string[] ExitCommands = { "exit", "shutdown", "end", "quit","bye","reboot","clear" };
+        private static string _userExitCode;
         private static void Main(string[] args)
         {
             AppDomain.CurrentDomain.UnhandledException += (o, e) =>
@@ -54,20 +54,69 @@ namespace ApiServer
 
 
                 StartHttpServer();
-                // Task.Factory.StartNew(StartHttpServer);
+                
 
-                var userExitCode = Console.ReadLine();
-                while (!ExitCommands.Contains(userExitCode))
-                {
-                    Console.WriteLine("command not recognised!");
-                    userExitCode = Console.ReadLine();
-                }
+                ListenForExit();
 
-                Log.Info("Shutting down http listener :(");
-                ShutdownHttpServer();
+                
+               
             }
 
             
+        }
+
+        private static void ListenForExit()
+        {
+            _userExitCode = Console.ReadLine();
+            while (!ExitCommands.Contains(_userExitCode))
+            {
+                Console.WriteLine("command not recognised!");
+                _userExitCode = Console.ReadLine();
+            }
+
+            if ("reboot".Equals(_userExitCode))
+            {
+                _userExitCode = string.Empty;
+                RebootHttpService();
+            }
+            else if ("clear".Equals(_userExitCode))
+            {
+                Console.Clear();
+                _userExitCode = string.Empty;
+                ListenForExit();
+            }
+            else
+            {
+                Log.Info("Shutting down http listener :(");
+                ShutdownHttpServer();
+            }
+        }
+
+        private static void RebootHttpService()
+        {
+            Log.Info("received request to reboot HTTP service");
+            
+            ShutdownHttpServer();
+
+            Log.Debug("refreshing .config file...."); //simple hack
+            ConfigurationManager.RefreshSection("appSettings");
+            ConfigurationManager.RefreshSection("configSections");
+            ConfigurationManager.RefreshSection("connectionStrings");
+            ConfigurationManager.RefreshSection("startup");
+            ConfigurationManager.RefreshSection("system.net");
+            ConfigurationManager.RefreshSection("authenticationMiddleware");
+            ConfigurationManager.RefreshSection("sidekickDelegatingHandlers");
+            ConfigurationManager.RefreshSection("sidekickEventHandlers");
+            ConfigurationManager.RefreshSection("httpApiHandlersSection");
+            ConfigurationManager.RefreshSection("mediaTypeFormatters");
+            ConfigurationManager.RefreshSection("runtime");
+            ConfigurationManager.RefreshSection("entityFramework");
+            Log.Debug("done refreshing .config file!");
+
+            StartHttpServer();
+            Log.Info("reboot completed!!");
+            ListenForExit();
+
         }
 
         private static void StartHttpServer()
