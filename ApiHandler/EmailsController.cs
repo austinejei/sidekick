@@ -26,7 +26,7 @@ namespace ApiHandlers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost, Route, OAuthScope("emails.send")]
-        public async Task<IHttpActionResult> ListUserProfile(EmailModel model)
+        public async Task<IHttpActionResult> SendEmail(EmailModel model)
         {
             if (model==null)
             {

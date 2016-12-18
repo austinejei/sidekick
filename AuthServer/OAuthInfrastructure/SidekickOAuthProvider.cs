@@ -17,6 +17,13 @@ namespace AuthServer.OAuthInfrastructure
         {
             _dbContext = new ApplicationDbContext();
         }
+
+        public override Task TokenEndpointResponse(OAuthTokenEndpointResponseContext context)
+        {
+            
+            return base.TokenEndpointResponse(context);
+        }
+
         public override Task AuthorizationEndpointResponse(OAuthAuthorizationEndpointResponseContext context)
         {
             
@@ -25,7 +32,7 @@ namespace AuthServer.OAuthInfrastructure
 
         public override  Task GrantCustomExtension(OAuthGrantCustomExtensionContext context)
         {
-            
+          
             return base.GrantCustomExtension(context);
 
         }
