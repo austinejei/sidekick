@@ -1,5 +1,6 @@
 using System;
 using System.Configuration;
+using System.IdentityModel.Tokens;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Formatting;
@@ -36,6 +37,7 @@ namespace ApiServer
                             jwtBearerAuthenticationOptions =
                                 Activator.CreateInstance(Type.GetType(moduleElement.Type)) as JwtBearerAuthenticationOptions;
 
+                           
                         }
                         catch (Exception exception)
                         {

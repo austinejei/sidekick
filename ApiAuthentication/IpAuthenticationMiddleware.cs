@@ -41,6 +41,22 @@ namespace ApiAuthentication
                 return;
             }
 
+            if (context.Request.Method.ToLower().Equals("get")) //only POST requests are allowed
+            {
+                await _nextMiddleware.Invoke(context);
+                return;
+            }
+
+            //allow batch requests to go through
+            if (!string.IsNullOrEmpty(context.Request.ContentType))
+            {
+                if (context.Request.ContentType.ToLower().Contains("multipart/mixed"))
+                {
+                    await _nextMiddleware.Invoke(context);
+                    return;
+                }
+            }
+
             var clientIp = context.Request.Headers["X-Forwarded-For"];
             var ipAddress = (string)context.Environment["server.RemoteIpAddress"];
             if (!string.IsNullOrEmpty(clientIp))
@@ -68,40 +84,67 @@ namespace ApiAuthentication
                 await context.Response.WriteAsync("user not found");
                 return;
             }
-            var appIdClaim = app.FindFirst(x=>x.Type==ClaimTypes.SerialNumber);
 
-            if (appIdClaim==null)
+            var claimsIdentity = context.Request.User.Identity as ClaimsIdentity;
+            if (claimsIdentity != null)
+            {
+
+                claimsIdentity.AddClaim(new Claim("IpAddress", ipAddress));
+
+                var identity = new ClaimsIdentity(claimsIdentity.Claims,
+                    context.Request.User.Identity.AuthenticationType);
+
+                context.Request.User = new ClaimsPrincipal(identity);
+
+                Logger.Info("successfully added caller's IP address {0}", ipAddress);
+            }
+
+
+            var allowedIps = app.FindFirst(x=>x.Type== "sidekick.client.allowedIps");
+
+            if (allowedIps==null)
             {
                 Logger.Fatal("app claim not found");
                 context.Response.StatusCode = 404;
                 context.Response.Headers.Add("Content-Type", new[] { "application/json" });
 
-                await context.Response.WriteAsync("app claim not found");
+                await context.Response.WriteAsync("app is not bound to any configured IP Address");
                 return;
             }
+            //var appIdClaim = app.FindFirst(x=>x.Type== "sidekick.client.appId");
 
-            var appId = int.Parse(appIdClaim.Value);
-            var client = await _dbContext.Apps.FirstOrDefaultAsync(a => a.Id == appId);
+            //if (appIdClaim==null)
+            //{
+            //    Logger.Fatal("app claim not found");
+            //    context.Response.StatusCode = 404;
+            //    context.Response.Headers.Add("Content-Type", new[] { "application/json" });
 
-            if (client==null)
+            //    await context.Response.WriteAsync("app claim not found");
+            //    return;
+            //}
+
+            //var appId = int.Parse(appIdClaim.Value);
+            //var client = await _dbContext.Apps.FirstOrDefaultAsync(a => a.Id == appId);
+
+            //if (client==null)
+            //{
+            //    Logger.Fatal("app not found");
+            //    context.Response.StatusCode = 404;
+            //    context.Response.Headers.Add("Content-Type", new[] { "application/json" });
+
+            //    await context.Response.WriteAsync("app claim not found");
+            //    return;
+            //}
+            if (!string.IsNullOrEmpty(allowedIps.Value))
             {
-                Logger.Fatal("app claim not found");
-                context.Response.StatusCode = 404;
-                context.Response.Headers.Add("Content-Type", new[] { "application/json" });
-
-                await context.Response.WriteAsync("app claim not found");
-                return;
-            }
-            if (!string.IsNullOrEmpty(client.AllowedIp))
-            {
-                if (client.AllowedIp.Contains("*")) //merchant wants to allow any IP to access the service
+                if (allowedIps.Value.Contains("*")) //merchant wants to allow any IP to access the service
                 {
                     Logger.Debug("Whitelist contains *. Will allow any request to pass through");
                     await _nextMiddleware.Invoke(context);
                     return;
                 }
 
-                _allowedIPs.AddRange(client.AllowedIp.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList());
+                _allowedIPs.AddRange(allowedIps.Value.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList());
 
             }
 

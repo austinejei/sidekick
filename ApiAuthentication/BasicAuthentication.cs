@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Api.Common;
 using DataLayer;
 using Microsoft.Owin;
+using Newtonsoft.Json;
 using NLog;
 
 namespace ApiAuthentication
@@ -95,8 +96,15 @@ namespace ApiAuthentication
                                              new Claim(ClaimTypes.Email, user.Email),
                                              new Claim(ClaimTypes.MobilePhone, user.PhoneNumber),
                                              new Claim(ClaimTypes.GivenName, user.Fullname),
-                                             new Claim(ClaimTypes.SerialNumber,
-                                                 app.Id.ToString()),
+                                             //new Claim(ClaimTypes.SerialNumber,app.Id.ToString()),
+
+                                             new Claim("sidekick.client.appId",app.Id.ToString()),
+                                             new Claim("sidekick.client.istrusted",app.IsTrusted.ToString()),
+                                             new Claim("sidekick.client.name",app.Username),
+                                             new Claim("sidekick.client.appName",app.ClientId),
+                                             new Claim("sidekick.client.allowedIps",string.IsNullOrEmpty(app.AllowedIp)?"*":app.AllowedIp),
+                                             new Claim("sidekick.client.meta",string.IsNullOrEmpty(app.Meta)?JsonConvert.SerializeObject(new {rateLimit=30,allowSso=false}):app.Meta),
+
 
                                          };
 
@@ -120,7 +128,7 @@ namespace ApiAuthentication
                         Logger.Warn("Invalid API credential {0}", authHeader.Parameter);
                         context.Response.StatusCode = 401;
                         // context.Response.Headers.Add("WWW-Authenticate", new[] { "Basic realm=\"USP\"" });
-                        await context.Response.WriteAsync(string.Format("Invalid API credentials"));
+                        await context.Response.WriteAsync("Invalid API credentials");
                     }
 
 
@@ -141,12 +149,7 @@ namespace ApiAuthentication
                     await _nextMiddleware.Invoke(context);
                     //return;
                 }
-                //if (context.Request.Uri.ToString().ToLower().Contains("ping")
-                //    || context.Request.Uri.ToString().ToLower().Contains("signalr")
-                //    || context.Request.Uri.ToString().ToLower().Contains("swagger"))
-                //{
-                //    await _nextMiddleware.Invoke(context);
-                //}
+                
                 else
                 {
                     Logger.Info("no authentication header detected...request will be failed!");

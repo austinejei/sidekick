@@ -88,33 +88,9 @@
     <Compile Include="AppScope.cs" />
     <Compile Include="ApplicationDbContext.cs" />
     <Compile Include="ApplicationUser.cs" />
-    <Compile Include="Migrations\201508131028387_initial_migration.cs" />
-    <Compile Include="Migrations\201508131028387_initial_migration.Designer.cs">
-      <DependentUpon>201508131028387_initial_migration.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201508140934443_App_Added_IsTrusted_And_AccessTokenExpiry.cs" />
-    <Compile Include="Migrations\201508140934443_App_Added_IsTrusted_And_AccessTokenExpiry.Designer.cs">
-      <DependentUpon>201508140934443_App_Added_IsTrusted_And_AccessTokenExpiry.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201508140937075_UserAppScope.cs" />
-    <Compile Include="Migrations\201508140937075_UserAppScope.Designer.cs">
-      <DependentUpon>201508140937075_UserAppScope.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201508141832504_App_Added_SsoEncryptionKey.cs" />
-    <Compile Include="Migrations\201508141832504_App_Added_SsoEncryptionKey.Designer.cs">
-      <DependentUpon>201508141832504_App_Added_SsoEncryptionKey.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201508241757322_App_Added_AppUrl.cs" />
-    <Compile Include="Migrations\201508241757322_App_Added_AppUrl.Designer.cs">
-      <DependentUpon>201508241757322_App_Added_AppUrl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201508270929239_App_Added_IsOAuth.cs" />
-    <Compile Include="Migrations\201508270929239_App_Added_IsOAuth.Designer.cs">
-      <DependentUpon>201508270929239_App_Added_IsOAuth.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201608091531483_App_Added_AllowedIp.cs" />
-    <Compile Include="Migrations\201608091531483_App_Added_AllowedIp.Designer.cs">
-      <DependentUpon>201608091531483_App_Added_AllowedIp.cs</DependentUpon>
+    <Compile Include="Migrations\201705241259028_initial.cs" />
+    <Compile Include="Migrations\201705241259028_initial.Designer.cs">
+      <DependentUpon>201705241259028_initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="OAuthScope.cs" />
@@ -127,26 +103,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201508131028387_initial_migration.resx">
-      <DependentUpon>201508131028387_initial_migration.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201508140934443_App_Added_IsTrusted_And_AccessTokenExpiry.resx">
-      <DependentUpon>201508140934443_App_Added_IsTrusted_And_AccessTokenExpiry.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201508140937075_UserAppScope.resx">
-      <DependentUpon>201508140937075_UserAppScope.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201508141832504_App_Added_SsoEncryptionKey.resx">
-      <DependentUpon>201508141832504_App_Added_SsoEncryptionKey.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201508241757322_App_Added_AppUrl.resx">
-      <DependentUpon>201508241757322_App_Added_AppUrl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201508270929239_App_Added_IsOAuth.resx">
-      <DependentUpon>201508270929239_App_Added_IsOAuth.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201608091531483_App_Added_AllowedIp.resx">
-      <DependentUpon>201608091531483_App_Added_AllowedIp.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201705241259028_initial.resx">
+      <DependentUpon>201705241259028_initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

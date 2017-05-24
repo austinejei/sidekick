@@ -30,8 +30,7 @@ namespace ApiHandlers
             Logger.Debug("received request to display user's profile");
 
             var userFromDb = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserName == User.Identity.Name);
-            await Task.Delay(0);
-
+            
             var user = User.Identity as ClaimsIdentity;
 
             return Ok(new

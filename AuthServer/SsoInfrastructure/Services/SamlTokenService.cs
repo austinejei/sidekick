@@ -47,7 +47,7 @@ namespace AuthServer.SsoInfrastructure.Services
             const string SamlTwoTokenType = "urn:oasis:names:tc:SAML:2.0:assertion";
             const bool RequireSsl = false;
 
-            var allowedRpAudiences = GetAuthorisedAudiencesWeCanIssueTokensTo();
+            var allowedRpAudiences = GetAuthorisedAudiencesWeCanIssueTokensTo(signInRequestMessage.Realm);
             var samlTokenSigningCertificate = GetSamlTokenSigningCertificate();
             var stsConfiguration = configurationFactory.Create(SamlTwoTokenType, "http://sidekick.local/sso/token", samlTokenSigningCertificate, allowedRpAudiences);
             var tokenService = stsConfiguration.CreateSecurityTokenService();
@@ -70,12 +70,24 @@ namespace AuthServer.SsoInfrastructure.Services
             }
         }
 
-        private static IEnumerable<string> GetAuthorisedAudiencesWeCanIssueTokensTo()
+        private static IEnumerable<string> GetAuthorisedAudiencesWeCanIssueTokensTo(string realm)
         {
-            var allowedAudience = _context.Apps.Where(CheckForSsoApps).DefaultIfEmpty(new App()).Select(a => a.AppUrl);
+            //var allowedAudience = _context.Apps.Where(CheckForSsoApps).DefaultIfEmpty(new App()).Select(a => a.AppUrl);
 
-            return allowedAudience;
-            //return new List<string> { InfrastructureConstants.Rp1Url, InfrastructureConstants.Rp2Url };
+            //return allowedAudience;
+
+            var app = _context.Apps.FirstOrDefault(a => a.SsoUrl == realm);
+
+            if (CheckForSsoApps(app))
+            {
+                return new List<string>
+                {
+                    realm
+                };
+            }
+
+            return new List<string>();
+
         }
 
         private static bool CheckForSsoApps(App app)

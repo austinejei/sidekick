@@ -64,12 +64,16 @@ namespace DataLayer.Migrations
                                                               Username = "kwaku.dev@sidekick.com",
                                                               IsActive=true,
                                                               IsTrusted = true,
-                                                              AccessTokenExpiry = TimeSpan.FromHours(2),
+                                                              
+                                                              AccessTokenExpiryTicks = TimeSpan.FromHours(2).Ticks,
+                                                              RefreshTokenExpiryTicks = TimeSpan.FromDays(30).Ticks,
                                                               AppUrl ="http://localhost/ssoclient/",
                                                               SsoEncryptionKey = "b4f5aa91cc5110ae69eda952a4ab5a024c1dd764",
                                                               Meta = "{\"rateLimit\":2000,\"allowSso\":true}", //API rate limit,
-                                                              IsOAuth = true,
+                                                              IsOAuth = true,AllowedIp = "*",
+                                                              SsoUrl = "http://localhost/ssoclient/",
                                                               
+
                                                           }
                                                       });
 
@@ -79,8 +83,7 @@ namespace DataLayer.Migrations
                                                       {
                                                           Id = 1,
                                                           AppId = 1,
-                                                          OAuthScopeId=1,
-                                                          
+                                                          OAuthScopeId=1, 
                                                       },
                                                        new AppScope
                                                       {

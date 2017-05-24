@@ -3,7 +3,7 @@ namespace DataLayer.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class initial_migration : DbMigration
+    public partial class initial : DbMigration
     {
         public override void Up()
         {
@@ -15,12 +15,20 @@ namespace DataLayer.Migrations
                         ClientId = c.String(),
                         ClientSecret = c.String(),
                         IsActive = c.Boolean(nullable: false),
+                        AppUrl = c.String(),
+                        SsoUrl = c.String(),
                         RedirectUrl = c.String(),
                         Meta = c.String(),
                         Username = c.String(),
                         Name = c.String(),
                         Description = c.String(),
+                        IsOAuth = c.Boolean(nullable: false),
                         DateCreated = c.DateTime(nullable: false),
+                        IsTrusted = c.Boolean(nullable: false),
+                        AllowedIp = c.String(),
+                        AccessTokenExpiryTicks = c.Long(nullable: false),
+                        RefreshTokenExpiryTicks = c.Long(nullable: false),
+                        SsoEncryptionKey = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -31,9 +39,6 @@ namespace DataLayer.Migrations
                         Id = c.Int(nullable: false, identity: true),
                         AppId = c.Int(nullable: false),
                         OAuthScopeId = c.Int(nullable: false),
-                        Enabled = c.Boolean(),
-                        Username = c.String(),
-                        Discriminator = c.String(nullable: false, maxLength: 128),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Apps", t => t.AppId, cascadeDelete: true)
@@ -85,10 +90,32 @@ namespace DataLayer.Migrations
                         DateUninstalled = c.DateTime(),
                         IsInstalled = c.Boolean(nullable: false),
                         AppId = c.Int(nullable: false),
+                        AccessToken = c.String(),
+                        HashedAccessToken = c.String(),
+                        RefreshToken = c.String(),
+                        HashedRefreshToken = c.String(),
+                        AccessTokenExpiresOn = c.DateTime(),
+                        RefreshTokenExpiresOn = c.DateTime(),
+                        UpdatedAt = c.DateTime(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Apps", t => t.AppId, cascadeDelete: true)
                 .Index(t => t.AppId);
+            
+            CreateTable(
+                "dbo.UserAppScopes",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        UserAppId = c.Int(nullable: false),
+                        OAuthScopeId = c.Int(nullable: false),
+                        Enabled = c.Boolean(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.OAuthScopes", t => t.OAuthScopeId, cascadeDelete: true)
+                .ForeignKey("dbo.UserApps", t => t.UserAppId, cascadeDelete: true)
+                .Index(t => t.UserAppId)
+                .Index(t => t.OAuthScopeId);
             
             CreateTable(
                 "dbo.AspNetUsers",
@@ -144,6 +171,8 @@ namespace DataLayer.Migrations
             DropForeignKey("dbo.AspNetUserRoles", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
+            DropForeignKey("dbo.UserAppScopes", "UserAppId", "dbo.UserApps");
+            DropForeignKey("dbo.UserAppScopes", "OAuthScopeId", "dbo.OAuthScopes");
             DropForeignKey("dbo.UserApps", "AppId", "dbo.Apps");
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
             DropForeignKey("dbo.AppScopes", "OAuthScopeId", "dbo.OAuthScopes");
@@ -151,6 +180,8 @@ namespace DataLayer.Migrations
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
             DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
             DropIndex("dbo.AspNetUsers", "UserNameIndex");
+            DropIndex("dbo.UserAppScopes", new[] { "OAuthScopeId" });
+            DropIndex("dbo.UserAppScopes", new[] { "UserAppId" });
             DropIndex("dbo.UserApps", new[] { "AppId" });
             DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
             DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
@@ -160,6 +191,7 @@ namespace DataLayer.Migrations
             DropTable("dbo.AspNetUserLogins");
             DropTable("dbo.AspNetUserClaims");
             DropTable("dbo.AspNetUsers");
+            DropTable("dbo.UserAppScopes");
             DropTable("dbo.UserApps");
             DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.AspNetRoles");

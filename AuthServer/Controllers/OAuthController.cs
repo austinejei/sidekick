@@ -64,10 +64,13 @@ namespace AuthServer.Controllers
           
             string msg;
             OAuthModel model;
-            if (!ScopesAreValid(scopeList, clientId, out msg,out model))
+            if (!ScopesAreValid(scopeList, app, out msg, out model))
             {
-                return new HttpStatusCodeResult(HttpStatusCode.Forbidden, msg);
-           
+                return
+                    RedirectPermanent(redirectUrl +
+                                      $"?error=scope_error&rror_description={msg}&state={Request.QueryString.Get("state")}");
+
+
             }
 
             var userExistingApp =
@@ -101,6 +104,10 @@ namespace AuthServer.Controllers
                     identity.AddClaim(new Claim("sidekick.client.meta", app.Meta));
                     identity.AddClaim(new Claim("sidekick.client.appId", app.Id.ToString()));
                     identity.AddClaim(new Claim("sidekick.client.appName", app.Name));
+                    identity.AddClaim(new Claim("sidekick.client.refreshTokenExpiry", app.RefreshTokenExpiry.ToString()));
+                    identity.AddClaim(new Claim("sidekick.client.allowedIps",
+                        string.IsNullOrEmpty(app.AllowedIp) ? "*" : app.AllowedIp));
+
 
 
                     authentication.SignIn(identity);
@@ -119,13 +126,16 @@ namespace AuthServer.Controllers
                 if (userExistingApp==null)//if it's not installed
                 {
                     //install the app onto the user's account
-                    _dbContext.UserApps.Add(new UserApp
+                    var userApp = new UserApp
                     {
                         AppId = app.Id,
                         DateInstalled = DateTime.Now,
                         Username = User.Identity.Name,
-                        IsInstalled=true
-                    });
+                        IsInstalled = true,
+
+                    };
+                    _dbContext.UserApps.Add(userApp);
+                    await _dbContext.SaveChangesAsync();
 
                     //copy the scopes into the user's account
                     //in the future, the user may tend to disable some scopes for this app
@@ -133,11 +143,9 @@ namespace AuthServer.Controllers
                     {
                         _dbContext.UserAppScopes.Add(new UserAppScope
                         {
-                            AppId = app.Id,
+                            UserAppId = userApp.Id,
                             Enabled = true,
                             OAuthScopeId = appScope.OAuthScopeId,
-                            Username = User.Identity.Name,
-                            
                         });
                     }
 
@@ -153,21 +161,22 @@ namespace AuthServer.Controllers
                         //then during installation, we get them back
 
                         var existingUserAppScopes =
-                            _dbContext.UserAppScopes.Where(s => s.AppId == app.Id && s.Username == User.Identity.Name);
+                            _dbContext.UserAppScopes.Where(s => s.UserAppId == userExistingApp.Id);
 
 
-                     
+
                         var newUserAppScopes = new List<UserAppScope>();
                         foreach (var appScope in app.AppScopes)
                         {
                             newUserAppScopes.Add(new UserAppScope
                             {
-                                AppId = app.Id,
+                                UserAppId = userExistingApp.Id,
                                 Enabled = true,
                                 OAuthScopeId = appScope.OAuthScopeId,
-                                Username = User.Identity.Name
+
                             });
                         }
+
 
 
 
@@ -179,7 +188,7 @@ namespace AuthServer.Controllers
                         {
                             _dbContext.UserAppScopes.AddRange(userAppScopes);
                         }
-                     
+
 
                         _dbContext.Entry(userExistingApp).State = EntityState.Modified;
                         await _dbContext.SaveChangesAsync();
@@ -202,7 +211,9 @@ namespace AuthServer.Controllers
                 identity.AddClaim(new Claim("sidekick.client.meta", app.Meta));
                 identity.AddClaim(new Claim("sidekick.client.appId", app.Id.ToString()));
                 identity.AddClaim(new Claim("sidekick.client.appName", app.Name));
-
+                identity.AddClaim(new Claim("sidekick.client.refreshTokenExpiry", app.RefreshTokenExpiry.ToString()));
+                identity.AddClaim(new Claim("sidekick.client.allowedIps",
+                    string.IsNullOrEmpty(app.AllowedIp) ? "*" : app.AllowedIp));
 
                 authentication.SignIn(identity);
             }
@@ -218,9 +229,9 @@ namespace AuthServer.Controllers
             return View(model);
         }
 
-      
 
-        private bool ScopesAreValid(string[] scopes, string clientId, out string msg, out OAuthModel model)
+
+        private bool ScopesAreValid(string[] scopes, App app, out string msg, out OAuthModel model)
         {
             if (scopes.Length == 0) //todo skip this if grant_type is SSO
             {
@@ -229,29 +240,15 @@ namespace AuthServer.Controllers
                 return false;
             }
 
-            var app = _dbContext.Apps.FirstOrDefault(a => a.ClientId == clientId);
-            if (app == null)
-            {
-                msg = "invalid client id";
-                model = null;
-                return false;
-            }
+            // var app = _dbContext.Apps.FirstOrDefault(a => a.ClientId == clientId);
+            //if (app == null)
+            //{
+            //    msg = "invalid client id";
+            //    model = null;
+            //    return false;
+            //}
 
             bool scopeOk = true;
-            var developerInfo = _dbContext.Users.FirstOrDefault(u => u.UserName == app.Username);
-            var oauthModel = new OAuthModel
-                             {
-                                 Developer = developerInfo.Fullname,
-                                 AppName = app.Name,
-                                 AppDescription = app.Description,
-                                 DeveloperEmail = developerInfo.Email,
-                                 Scopes = app.AppScopes.Select(s => new AppScopeList
-                                                                    {
-                                                                        Name=s.OAuthScope.Name,
-                                                                        Alias=s.OAuthScope.Alias,
-                                                                        Description=s.OAuthScope.Description,
-                                                                    }).ToList()
-                             };
 
 
             string errMsg = string.Empty;
@@ -264,6 +261,43 @@ namespace AuthServer.Controllers
                     break;
                 }
             }
+
+            var oauthModel = new OAuthModel();
+
+            if (scopeOk)
+            {
+                var developerInfo = _dbContext.Users.FirstOrDefault(u => u.UserName == app.Username);
+
+                if (developerInfo == null)
+                {
+                    errMsg = "Developer\'s information cannot be found";
+                    scopeOk = false;
+                }
+                else if (!developerInfo.IsActive)
+                {
+                    errMsg = string.Format("Developer, {0}, has been de-activated on AppTellSL", developerInfo.Fullname);
+                    scopeOk = false;
+                }
+                else
+                {
+                    oauthModel = new OAuthModel
+                    {
+                        Developer = developerInfo.Fullname,
+                        AppName = app.Name,
+                        AppDescription = app.Description,
+                        DeveloperEmail = developerInfo.Email,
+                        Scopes = app.AppScopes.Select(s => new AppScopeList
+                        {
+                            Name = s.OAuthScope.Name,
+                            Alias = s.OAuthScope.Alias,
+                            Description = s.OAuthScope.Description,
+                        }).ToList()
+                    };
+                }
+
+            }
+
+
 
             msg = errMsg;
             model = oauthModel;

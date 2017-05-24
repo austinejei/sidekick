@@ -191,6 +191,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\RefreshTokenTransformerMiddleware.cs" />
     <Compile Include="Controllers\SsoController.cs" />
     <Compile Include="OAuthInfrastructure\SidekickJwtFormat.cs" />
     <Compile Include="OAuthInfrastructure\SideKickOAuthImplementation.cs" />

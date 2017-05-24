@@ -2,7 +2,9 @@
 using System.Configuration;
 using System.Linq;
 using System.Net.Http;
+using System.Security.Claims;
 using DataLayer;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using WebApiContrib.Caching;
 using WebApiContrib.MessageHandlers;
@@ -17,30 +19,23 @@ namespace ApiDelegatingHandlers
         public RateLimitDelegatingHandler() : base(new InMemoryThrottleStore(), c =>
                                                                                 {
                                                                                     const int defaultRateLimit = 60;
-                                                                                    App thirdParty;
-                                                                                    using (var thirdPartyRepository = new ApplicationDbContext())
+                                                                                    try
                                                                                     {
-                                                                                        thirdParty =
-                                                                                            thirdPartyRepository.Apps.FirstOrDefault(
-                                                                                                t => t.Name == c);
-                                                                                    }
-
-                                                                                    if (thirdParty!=null)
-                                                                                    {
-                                                                                        if (!string.IsNullOrEmpty(thirdParty.Meta))
+                                                                                        var metaData = JObject.Parse(c);
+                                                                                        var rateLimit = metaData["rateLimit"];
+                                                                                        if (rateLimit != null)
                                                                                         {
-                                                                                            var metaData = JObject.Parse(thirdParty.Meta);
-
-                                                                                            var rateLimit = metaData["rateLimit"];
-                                                                                            if (rateLimit != null)
-                                                                                            {
-                                                                                                return
-                                                                                                    int.Parse(
-                                                                                                        rateLimit
-                                                                                                            .ToString());
-                                                                                            }
+                                                                                            return
+                                                                                                int.Parse(
+                                                                                                    rateLimit
+                                                                                                        .ToString());
                                                                                         }
                                                                                     }
+                                                                                    catch (Exception ex)
+                                                                                    {
+
+                                                                                    }
+
 
 
                                                                                     return defaultRateLimit;
@@ -51,9 +46,39 @@ namespace ApiDelegatingHandlers
         protected override string GetUserIdentifier(HttpRequestMessage request)
         {
             var user = request.GetRequestContext().Principal;
-            if (user!=null)
+            if (user != null)
             {
-                return user.Identity.Name;
+                var userPrincipal = user.Identity as ClaimsIdentity;
+
+                if (userPrincipal == null)
+                {
+                    return JsonConvert.SerializeObject(new
+                    {
+                        rateLimit = 300,
+                        allowSso = false
+                    });
+                }
+
+                var metaClaim = userPrincipal.FindFirst("sidekick.client.meta");
+
+                if (metaClaim == null)
+                {
+
+                    return JsonConvert.SerializeObject(new
+                    {
+                        rateLimit = 30,
+                        allowSso = false
+                    });
+                }
+                return metaClaim.Value;
+            }
+            if (request.RequestUri.ToString().Contains("swagger"))
+            {
+                return JsonConvert.SerializeObject(new
+                {
+                    rateLimit = 30000,
+                    allowSso = false
+                });
             }
             return base.GetUserIdentifier(request);
         }

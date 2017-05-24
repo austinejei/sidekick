@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataLayer
 {
@@ -15,6 +16,7 @@ namespace DataLayer
         public bool IsActive { get; set; }
 
         public string AppUrl { get; set; } //main point of entry for app
+        public string SsoUrl { get; set; } //just for SSO
 
         public string RedirectUrl { get; set; }
 
@@ -32,10 +34,27 @@ namespace DataLayer
         public DateTime DateCreated { get; set; }
 
         public bool IsTrusted { get; set; } //if trusted, we give a refresh token
-        public TimeSpan AccessTokenExpiry { get; set; }
-        public string SsoEncryptionKey { get; set; }
+     
         public string AllowedIp { get; set; }
 
-//TTL for each access token
+
+        [NotMapped]
+        public TimeSpan AccessTokenExpiry
+        {
+            get { return TimeSpan.FromTicks(AccessTokenExpiryTicks); }
+        }
+
+        public long AccessTokenExpiryTicks { get; set; }
+        [NotMapped]
+        public TimeSpan RefreshTokenExpiry
+        {
+            get { return TimeSpan.FromTicks(RefreshTokenExpiryTicks); }
+        }
+
+
+        public long RefreshTokenExpiryTicks { get; set; }
+        public string SsoEncryptionKey { get; set; }
+
+        //TTL for each access token
     }
 }

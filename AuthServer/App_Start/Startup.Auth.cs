@@ -69,6 +69,7 @@ namespace AuthServer
             //    ClientSecret = ""
             //});
 
+            app.Use<RefreshTokenTransformerMiddleware>();
             app.UseOAuthAuthorizationServer(new SideKickOAuthImplementation()); //this kick starts our OAuth server :)
         }
 
