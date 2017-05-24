@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using AuthServer.Controllers;
 
-namespace AuthServer.Controllers
+namespace AuthServer.Models
 {
     public class OAuthModel
     {

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.WebPages.Scope;
+using AuthServer.Models;
 using DataLayer;
 
 namespace AuthServer.Controllers
