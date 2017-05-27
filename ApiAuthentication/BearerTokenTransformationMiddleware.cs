@@ -46,7 +46,7 @@ namespace ApiAuthentication
 
                     if (userApp==null)
                     {
-                        Logger.Debug("Bearer token {0} not found for any user",authHeader.Parameter);
+                        Logger.Error("Bearer token {0} not found for any user",authHeader.Parameter);
                         context.Response.StatusCode = 404;
                         //context.Response.Headers.Add("WWW-Authenticate",new []{"Basic realm=\"USP\""});
                         await
@@ -58,7 +58,7 @@ namespace ApiAuthentication
                     {
                         if (DateTime.Now>userApp.AccessTokenExpiresOn.Value)
                         {
-                            Logger.Debug("Bearer token {0} is no longer valid. It was expired on {1}", authHeader.Parameter,userApp.AccessTokenExpiresOn);
+                            Logger.Error("Bearer token {0} is no longer valid. It was expired on {1}", authHeader.Parameter,userApp.AccessTokenExpiresOn);
                             context.Response.StatusCode = 401;
                             //context.Response.Headers.Add("WWW-Authenticate",new []{"Basic realm=\"USP\""});
                             await
