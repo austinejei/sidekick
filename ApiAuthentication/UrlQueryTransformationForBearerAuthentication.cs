@@ -37,7 +37,7 @@ namespace ApiAuthentication
                 string accessToken = null;
                 if (parsedQuery.AllKeys.Contains("access_token", StringComparer.CurrentCultureIgnoreCase))
                 {
-                    accessToken = parsedQuery["clientid"];
+                    accessToken = parsedQuery["access_token"];
                 }
                 
 
